@@ -99,6 +99,7 @@ extern NSTimeInterval const SWPhotoBrowerAnimationDuration;
  */
 - (void)show;
 
+// 不推荐使用的接口
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil NS_UNAVAILABLE;
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder __unavailable;
