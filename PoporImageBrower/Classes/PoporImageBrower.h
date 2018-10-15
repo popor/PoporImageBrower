@@ -69,12 +69,6 @@ extern NSTimeInterval const SWPhotoBrowerAnimationDuration;
  */
 @property (nonatomic,readonly) NSInteger index;
 
-//@property (nonatomic,readonly,copy) NSArray<NSURL *> *normalImageUrls;
-//@property (nonatomic,readonly,copy) NSArray<NSURL *> *bigImageUrls;
-//
-//@property (nonatomic,readonly,copy) NSArray<UIImage *> *normalImages;
-//@property (nonatomic,readonly,copy) NSArray<UIImage *> *bigImages;
-
 @property (nonatomic,readonly,copy) NSArray<PoporImageEntity *> * imageArray;
 /**
  小图的大小
@@ -84,16 +78,6 @@ extern NSTimeInterval const SWPhotoBrowerAnimationDuration;
  是否禁止保存图片
  */
 @property (nonatomic) BOOL disablePhotoSave;
-/**
- 初始化方法
-
- @param index 当前图片在数组中的index
- @param delegate delegate
- @param normalImageUrls 小图url数组
- @param bigImageUrls 大图url数组
- @param browerPresentingViewController 在哪个控制器上弹出
- @return 图片浏览器
- */
 
 - (instancetype)initWithIndex:(NSInteger)index delegate:(id<PoporImageBrowerDelegate>)delegate imageArray:(NSArray<PoporImageEntity *> *)imageArray presentingVC:(UIViewController *)presentingVC;
 
