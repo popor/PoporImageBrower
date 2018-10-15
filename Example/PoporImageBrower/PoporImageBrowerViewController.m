@@ -28,7 +28,7 @@ static NSString *const Cell = @"cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.useImage = YES;
+    self.useImage = NO;
     self.dataArray = @[
                        @"http://ww2.sinaimg.cn/thumbnail/9ecab84ejw1emgd5nd6eaj20c80c8q4a.jpg",
                        @"http://ww2.sinaimg.cn/thumbnail/642beb18gw1ep3629gfm0g206o050b2a.gif",

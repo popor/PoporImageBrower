@@ -12,11 +12,12 @@
 
 @interface SWPhotoBrowerCell : UICollectionViewCell<UIGestureRecognizerDelegate>
 
-@property (nonatomic,strong) UIScrollView            *scrollView;
-@property (nonatomic,strong) UIImageView             *imagView;
-@property (nonatomic,strong) NSURL                   *bigImageUrl;
-@property (nonatomic,strong) NSURL                   *normalImageUrl;
-@property (nonatomic,weak  ) SWPhotoBrowerController *browerVC;
+@property (nonatomic, strong) UIScrollView            *scrollView;
+@property (nonatomic, strong) UIImageView             *imagView;
+@property (nonatomic, strong) NSURL                   *bigImageUrl;
+@property (nonatomic, strong) NSURL                   *normalImageUrl;
+@property (nonatomic, weak  ) SWPhotoBrowerController *browerVC;
+//@property (nonatomic        ) BOOL                    imageDataUrl;
 
 - (void)adjustImageViewWithImage:(UIImage *)image;
 

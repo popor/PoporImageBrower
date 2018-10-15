@@ -129,26 +129,31 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 }
 
 - (void)setupUI {
-    UICollectionViewFlowLayout *flow = [[UICollectionViewFlowLayout alloc] init];
-    flow.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    self.collectionView = [[MyCollectionView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width+16, self.view.frame.size.height) collectionViewLayout:flow];
-    if (@available(iOS 11, *)) {
-        if([self.collectionView respondsToSelector:@selector(setContentInsetAdjustmentBehavior:)]){
-            self.collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    self.collectionView = ({
+        UICollectionViewFlowLayout *flow = [[UICollectionViewFlowLayout alloc] init];
+        flow.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+        
+        MyCollectionView * cv = [[MyCollectionView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width+16, self.view.frame.size.height) collectionViewLayout:flow];
+        if (@available(iOS 11, *)) {
+            if([cv respondsToSelector:@selector(setContentInsetAdjustmentBehavior:)]){
+                cv.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+            }
         }
-    }
-    self.collectionView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
-    flow.minimumLineSpacing = 0;
-    self.collectionView.delegate = self;
-    self.collectionView.dataSource = self;
-    self.collectionView.showsHorizontalScrollIndicator = NO;
-    self.collectionView.showsVerticalScrollIndicator = NO;
-    self.collectionView.pagingEnabled = YES;
-    self.collectionView.backgroundColor = [UIColor clearColor];
-    //一开始先隐藏浏览器,做法放大动画再显示
-    self.collectionView.hidden = YES;
-    [self.collectionView registerClass:[SWPhotoBrowerCell class] forCellWithReuseIdentifier:@"cell"];
-    [self.view addSubview:self.collectionView];
+        cv.autoresizingMask               = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
+        flow.minimumLineSpacing           = 0;
+        cv.delegate                       = self;
+        cv.dataSource                     = self;
+        cv.showsHorizontalScrollIndicator = NO;
+        cv.showsVerticalScrollIndicator   = NO;
+        cv.pagingEnabled                  = YES;
+        cv.backgroundColor                = [UIColor clearColor];
+        cv.hidden                         = YES;//一开始先隐藏浏览器,做法放大动画再显示
+        [cv registerClass:[SWPhotoBrowerCell class] forCellWithReuseIdentifier:@"cell"];
+        [self.view addSubview:cv];
+        
+        cv;
+    });
+    
     //添加平移手势
     self.panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pullDownGRAction:)];
     self.panGesture.delegate = self;
@@ -163,11 +168,10 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
-    if(self.flag){
-        return;
+    if(!self.flag){
+        self.flag = YES;
+        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:_index inSection:0] atScrollPosition:UICollectionViewScrollPositionLeft animated:false];
     }
-    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:_index inSection:0] atScrollPosition:UICollectionViewScrollPositionLeft animated:false];
-    self.flag = YES;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
@@ -388,7 +392,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 }
 
 - (CGRect)getTempImageViewFrameWithImage:(UIImage *)image {
-    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+    CGFloat screenWidth  = [UIScreen mainScreen].bounds.size.width;
     CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
     CGFloat scale = 1.0f;
     if(image != nil) {
@@ -400,20 +404,6 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
         inset = (screenHeight - imageHeight)*0.5f;
     }
     return CGRectMake(0, inset, screenWidth, imageHeight);
-}
-
-- (NSMutableDictionary *)originalImages {
-    if(!_originalImages){
-        _originalImages = [NSMutableDictionary dictionaryWithCapacity:0];
-    }
-    return _originalImages;
-}
-
-- (NSMutableDictionary *)originalImageViews {
-    if(!_originalImageViews) {
-        _originalImageViews = [NSMutableDictionary dictionaryWithCapacity:0];
-    }
-    return _originalImageViews;
 }
 
 #pragma mark - UIViewControllerTransitioningDelegate
@@ -566,6 +556,21 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
     NSLog(@"%s",__func__);
     [[SDWebImageManager sharedManager] cancelAll];
     [[NSNotificationCenter defaultCenter] removeObserver:self.observer];
+}
+
+#pragma mark - get set
+- (NSMutableDictionary *)originalImages {
+    if(!_originalImages){
+        _originalImages = [NSMutableDictionary dictionaryWithCapacity:0];
+    }
+    return _originalImages;
+}
+
+- (NSMutableDictionary *)originalImageViews {
+    if(!_originalImageViews) {
+        _originalImageViews = [NSMutableDictionary dictionaryWithCapacity:0];
+    }
+    return _originalImageViews;
 }
 
 @end

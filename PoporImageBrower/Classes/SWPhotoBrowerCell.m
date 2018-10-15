@@ -234,29 +234,38 @@
 - (void)showHUDWithMessage:(NSString *)msg imageName:(NSString *)imageName {
     [MBProgressHUD hideHUDForView:self.contentView animated:NO];
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.contentView animated:YES];
-    hud.mode = MBProgressHUDModeCustomView;
-    hud.label.text = msg;
-    hud.label.font = [UIFont systemFontOfSize:15];
+    hud.mode         = MBProgressHUDModeCustomView;
+    hud.label.text   = msg;
+    hud.label.font   = [UIFont systemFontOfSize:15];
     hud.contentColor = [UIColor whiteColor];
     
     
     hud.customView = [[UIImageView alloc] initWithImage:[PoporImageBrowerBundle imageName:imageName]];
-    hud.userInteractionEnabled = NO;
-    hud.bezelView.style = MBProgressHUDBackgroundStyleSolidColor;
-    hud.backgroundView.style = MBProgressHUDBackgroundStyleSolidColor;
+    hud.userInteractionEnabled    = NO;
+    hud.bezelView.style           = MBProgressHUDBackgroundStyleSolidColor;
+    hud.backgroundView.style      = MBProgressHUDBackgroundStyleSolidColor;
     hud.bezelView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5f];
-    hud.square = YES;//强制让hud的宽高相等
+    hud.square                    = YES;//强制让hud的宽高相等
     [hud hideAnimated:YES afterDelay:2.0f];
 }
 
 #pragma mark - UIGestureRecognizerDelegate
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
-    if(gestureRecognizer == _longPress &&
-       ![[SDImageCache sharedImageCache] imageFromCacheForKey:self.browerVC.bigImageUrls[self.browerVC.index].absoluteString] &&
-       ![[SDImageCache sharedImageCache] imageFromCacheForKey:self.browerVC.normalImageUrls[self.browerVC.index].absoluteString]){
-        return NO;
+    if(gestureRecognizer == _longPress){
+        if (self.browerVC.disablePhotoSave) {
+            return NO;
+        }else{
+            if (self.bigImageUrl || self.normalImageUrl) {
+                if (![[SDImageCache sharedImageCache] imageFromCacheForKey:self.browerVC.bigImageUrls[self.browerVC.index].absoluteString] &&
+                    ![[SDImageCache sharedImageCache] imageFromCacheForKey:self.browerVC.normalImageUrls[self.browerVC.index].absoluteString]) {
+                    
+                    return NO;
+                }
+            }
+            return YES;
+        }
     }
-    if(gestureRecognizer == _longPress) return !self.browerVC.disablePhotoSave;
+    
     return YES;
 }
 
