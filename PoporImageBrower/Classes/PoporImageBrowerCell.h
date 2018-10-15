@@ -1,5 +1,5 @@
 //
-//  SWPhotoBrowerCell.h
+//  PoporImageBrowerCell.h
 //  Demo
 //
 //  Created by 周少文 on 16/8/20.
@@ -8,15 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-@class SWPhotoBrowerController;
+@class PoporImageBrower;
 
-@interface SWPhotoBrowerCell : UICollectionViewCell<UIGestureRecognizerDelegate>
+@interface PoporImageBrowerCell : UICollectionViewCell<UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) UIScrollView            *scrollView;
 @property (nonatomic, strong) UIImageView             *imagView;
 @property (nonatomic, strong) NSURL                   *bigImageUrl;
 @property (nonatomic, strong) NSURL                   *normalImageUrl;
-@property (nonatomic, weak  ) SWPhotoBrowerController *browerVC;
+@property (nonatomic, weak  ) PoporImageBrower *browerVC;
 //@property (nonatomic        ) BOOL                    imageDataUrl;
 
 - (void)adjustImageViewWithImage:(UIImage *)image;

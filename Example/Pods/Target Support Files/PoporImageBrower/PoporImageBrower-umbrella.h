@@ -10,11 +10,11 @@
 #endif
 #endif
 
+#import "PoporImageBrower.h"
 #import "PoporImageBrowerBundle.h"
-#import "SWPhotoBrowerCell.h"
-#import "SWPhotoBrowerController.h"
-#import "SWProgressView.h"
-#import "SWShortTapGestureRecognizer.h"
+#import "PoporImageBrowerCell.h"
+#import "PoporProgressView.h"
+#import "PoporShortTapGestureRecognizer.h"
 
 FOUNDATION_EXPORT double PoporImageBrowerVersionNumber;
 FOUNDATION_EXPORT const unsigned char PoporImageBrowerVersionString[];

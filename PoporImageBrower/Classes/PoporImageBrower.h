@@ -1,5 +1,5 @@
 //
-//  SWPhotoBrowerController.h
+//  PoporImageBrower.h
 //  Demo
 //
 //  Created by 周少文 on 16/8/20.
@@ -8,19 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
-typedef NS_ENUM(NSUInteger, SWPhotoBrowerControllerStatus) {
-    SWPhotoBrowerControllerUnShow,//未显示
-    SWPhotoBrowerControllerWillShow,//将要显示出来
-    SWPhotoBrowerControllerDidShow,//已经显示出来
-    SWPhotoBrowerControllerWillHide,//将要隐藏
-    SWPhotoBrowerControllerDidHide,//已经隐藏
+typedef NS_ENUM(NSUInteger, PoporImageBrowerStatus) {
+    PoporImageBrowerUnShow,//未显示
+    PoporImageBrowerWillShow,//将要显示出来
+    PoporImageBrowerDidShow,//已经显示出来
+    PoporImageBrowerWillHide,//将要隐藏
+    PoporImageBrowerDidHide,//已经隐藏
 };
 
-@class SWPhotoBrowerController;
+@class PoporImageBrower;
 
 extern NSTimeInterval const SWPhotoBrowerAnimationDuration;
 
-@protocol SWPhotoBrowerControllerDelegate <NSObject>
+@protocol PoporImageBrowerDelegate <NSObject>
 
 @required
 
@@ -31,7 +31,7 @@ extern NSTimeInterval const SWPhotoBrowerAnimationDuration;
  @param index 当前图片索引
  @return 原始的UIImageView
  */
-- (UIImageView *)photoBrowerControllerOriginalImageView:(SWPhotoBrowerController *)browerController withIndex:(NSInteger)index;
+- (UIImageView *)photoBrowerControllerOriginalImageView:(PoporImageBrower *)browerController withIndex:(NSInteger)index;
 
 @optional
 /**
@@ -40,27 +40,27 @@ extern NSTimeInterval const SWPhotoBrowerAnimationDuration;
  @param browerController 图片浏览器
  @param index 当前图片索引
  */
-- (void)photoBrowerControllerWillHide:(SWPhotoBrowerController *)browerController withIndex:(NSInteger)index;
+- (void)photoBrowerControllerWillHide:(PoporImageBrower *)browerController withIndex:(NSInteger)index;
 /**
  下载失败的占位图
 
  @param browerController 图片浏览器
  @return 占位图
  */
-- (UIImage *)photoBrowerControllerPlaceholderImageForDownloadError:(SWPhotoBrowerController *)browerController;
+- (UIImage *)photoBrowerControllerPlaceholderImageForDownloadError:(PoporImageBrower *)browerController;
 
 @end
 
-@interface SWPhotoBrowerController : UIViewController<UIViewControllerTransitioningDelegate,UIViewControllerAnimatedTransitioning>
+@interface PoporImageBrower : UIViewController<UIViewControllerTransitioningDelegate,UIViewControllerAnimatedTransitioning>
 
 //保存是哪个控制器弹出的图片浏览器,解决self.presentingViewController在未present之前取到的值为nil的情况
 @property (nonatomic,weak,readonly) UIViewController *browerPresentingViewController;
 /**
  显示状态
  */
-@property (nonatomic,readonly) SWPhotoBrowerControllerStatus photoBrowerControllerStatus;
+@property (nonatomic,readonly) PoporImageBrowerStatus photoBrowerControllerStatus;
 
-@property (nonatomic,weak) id<SWPhotoBrowerControllerDelegate> delegate;
+@property (nonatomic,weak) id<PoporImageBrowerDelegate> delegate;
 /**
  当前图片的索引
  */
@@ -90,9 +90,9 @@ extern NSTimeInterval const SWPhotoBrowerAnimationDuration;
  @param browerPresentingViewController 在哪个控制器上弹出
  @return 图片浏览器
  */
-- (instancetype)initWithIndex:(NSInteger)index delegate:(id<SWPhotoBrowerControllerDelegate>)delegate normalImageUrls:(NSArray<NSURL *> *)normalImageUrls bigImageUrls:(NSArray<NSURL *> *)bigImageUrls browerPresentingViewController:(UIViewController *)browerPresentingViewController;
+- (instancetype)initWithIndex:(NSInteger)index delegate:(id<PoporImageBrowerDelegate>)delegate normalImageUrls:(NSArray<NSURL *> *)normalImageUrls bigImageUrls:(NSArray<NSURL *> *)bigImageUrls browerPresentingViewController:(UIViewController *)browerPresentingViewController;
 
-- (instancetype)initWithIndex:(NSInteger)index delegate:(id<SWPhotoBrowerControllerDelegate>)delegate normalImages:(NSArray<UIImage *> *)normalImages bigImages:(NSArray<UIImage *> *)bigImages browerPresentingViewController:(UIViewController *)browerPresentingViewController;
+- (instancetype)initWithIndex:(NSInteger)index delegate:(id<PoporImageBrowerDelegate>)delegate normalImages:(NSArray<UIImage *> *)normalImages bigImages:(NSArray<UIImage *> *)bigImages browerPresentingViewController:(UIViewController *)browerPresentingViewController;
 
 /**
  显示图片浏览器

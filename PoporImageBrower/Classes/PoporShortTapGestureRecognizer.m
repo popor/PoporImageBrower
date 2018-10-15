@@ -1,15 +1,15 @@
 //
-//  SWShortTapGestureRecognizer.m
+//  PoporShortTapGestureRecognizer.m
 //  SWPhotoBrower
 //
 //  Created by zhoushaowen on 2017/11/2.
 //  Copyright © 2017年 Yidu. All rights reserved.
 //
 
-#import "SWShortTapGestureRecognizer.h"
+#import "PoporShortTapGestureRecognizer.h"
 #import <UIKit/UIGestureRecognizerSubclass.h>
 
-@implementation SWShortTapGestureRecognizer
+@implementation PoporShortTapGestureRecognizer
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [super touchesBegan:touches withEvent:event];

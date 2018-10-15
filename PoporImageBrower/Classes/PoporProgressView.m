@@ -1,14 +1,14 @@
 //
-//  SWProgressView.m
+//  PoporProgressView.m
 //  Demo
 //
 //  Created by 周少文 on 16/8/24.
 //  Copyright © 2016年 YiXi. All rights reserved.
 //
 
-#import "SWProgressView.h"
+#import "PoporProgressView.h"
 
-@implementation SWProgressView {
+@implementation PoporProgressView {
     __weak id _observer;
 }
 
@@ -28,7 +28,7 @@
 }
 
 + (instancetype)progressView {
-    SWProgressView *view = [[self alloc] initWithFrame:CGRectMake(0, 0, 96/2.0f, 96/2.0f)];
+    PoporProgressView *view = [[self alloc] initWithFrame:CGRectMake(0, 0, 96/2.0f, 96/2.0f)];
     return view;
 }
 

@@ -1,5 +1,5 @@
 //
-//  SWShortTapGestureRecognizer.h
+//  PoporShortTapGestureRecognizer.h
 //  SWPhotoBrower
 //
 //  Created by zhoushaowen on 2017/11/2.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SWShortTapGestureRecognizer : UITapGestureRecognizer
+@interface PoporShortTapGestureRecognizer : UITapGestureRecognizer
 
 @end

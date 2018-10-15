@@ -1,32 +1,32 @@
 //
-//  SWPhotoBrowerCell.m
+//  PoporImageBrowerCell.m
 //  Demo
 //
 //  Created by 周少文 on 16/8/20.
 //  Copyright © 2016年 YiXi. All rights reserved.
 //
 
-#import "SWPhotoBrowerCell.h"
+#import "PoporImageBrowerCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
-#import "SWPhotoBrowerController.h"
-#import "SWProgressView.h"
+#import "PoporImageBrower.h"
+#import "PoporProgressView.h"
 #import <SDWebImage/SDWebImageManager.h>
 #import <MBProgressHUD/MBProgressHUD.h>
-#import "SWShortTapGestureRecognizer.h"
+#import "PoporShortTapGestureRecognizer.h"
 
 #import "PoporImageBrowerBundle.h"
 
-@interface SWPhotoBrowerCell ()<UIScrollViewDelegate>
+@interface PoporImageBrowerCell ()<UIScrollViewDelegate>
 {
     __weak id _observer;
     UILongPressGestureRecognizer *_longPress;
 }
-@property (nonatomic,strong) SWProgressView *progressView;
+@property (nonatomic,strong) PoporProgressView *progressView;
 @property (nonatomic) UIDeviceOrientation currentOrientation;
 
 @end
 
-@implementation SWPhotoBrowerCell
+@implementation PoporImageBrowerCell
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if(self = [super initWithFrame:frame]) {
@@ -65,7 +65,7 @@
         singleTap.numberOfTapsRequired = 1;
         [_scrollView addGestureRecognizer:singleTap];
         //双击
-        SWShortTapGestureRecognizer *doubleTap = [[SWShortTapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTap:)];
+        PoporShortTapGestureRecognizer *doubleTap = [[PoporShortTapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTap:)];
         doubleTap.numberOfTapsRequired = 2;
         [_scrollView addGestureRecognizer:doubleTap];
         [singleTap requireGestureRecognizerToFail:doubleTap];
@@ -79,9 +79,9 @@
     return _scrollView;
 }
 
-- (SWProgressView *)progressView {
+- (PoporProgressView *)progressView {
     if(!_progressView) {
-        _progressView = [SWProgressView progressView];
+        _progressView = [PoporProgressView progressView];
     }
     
     return _progressView;

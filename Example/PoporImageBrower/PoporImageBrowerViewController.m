@@ -9,11 +9,11 @@
 #import "PoporImageBrowerViewController.h"
 #import "MyCollectionViewCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
-#import <PoporImageBrower/SWPhotoBrowerController.h>
+#import <PoporImageBrower/PoporImageBrower.h>
 
 static NSString *const Cell = @"cell";
 
-@interface PoporImageBrowerViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, SWPhotoBrowerControllerDelegate>
+@interface PoporImageBrowerViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, PoporImageBrowerDelegate>
 
 @property (nonatomic, getter=isUseImage) BOOL useImage;
 @property (nonatomic, strong) UICollectionView * collectionView;
@@ -91,7 +91,7 @@ static NSString *const Cell = @"cell";
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     if (self.isUseImage) {
-        SWPhotoBrowerController *photoBrower = [[SWPhotoBrowerController alloc] initWithIndex:indexPath.item delegate:self normalImages:self.smallImageArray bigImages:self.bigImageArray browerPresentingViewController:self];
+        PoporImageBrower *photoBrower = [[PoporImageBrower alloc] initWithIndex:indexPath.item delegate:self normalImages:self.smallImageArray bigImages:self.bigImageArray browerPresentingViewController:self];
         // photoBrower.disablePhotoSave = YES;
         
         [photoBrower show];
@@ -104,21 +104,21 @@ static NSString *const Cell = @"cell";
             NSString *str = [obj stringByReplacingOccurrencesOfString:@"thumbnail" withString:@"bmiddle"];
             [bigImageUrls addObject:[NSURL URLWithString:str]];
         }];
-        SWPhotoBrowerController *photoBrower = [[SWPhotoBrowerController alloc] initWithIndex:indexPath.item delegate:self normalImageUrls:[normalImageUrls copy] bigImageUrls:[bigImageUrls copy] browerPresentingViewController:self];
+        PoporImageBrower *photoBrower = [[PoporImageBrower alloc] initWithIndex:indexPath.item delegate:self normalImageUrls:[normalImageUrls copy] bigImageUrls:[bigImageUrls copy] browerPresentingViewController:self];
         // photoBrower.disablePhotoSave = YES;
         
         [photoBrower show];
     }
 }
 
-#pragma mark - SWPhotoBrowerControllerDelegate
-- (UIImageView *)photoBrowerControllerOriginalImageView:(SWPhotoBrowerController *)browerController withIndex:(NSInteger)index {
+#pragma mark - PoporImageBrowerDelegate
+- (UIImageView *)photoBrowerControllerOriginalImageView:(PoporImageBrower *)browerController withIndex:(NSInteger)index {
     //cellForItemAtIndexPath:The cell object at the corresponding index path or nil if the cell is not visible or indexPath is out of range.
     MyCollectionViewCell *cell = (MyCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]];
     return cell.imgV;
 }
 
-- (void)photoBrowerControllerWillHide:(SWPhotoBrowerController *)browerController withIndex:(NSInteger)index {
+- (void)photoBrowerControllerWillHide:(PoporImageBrower *)browerController withIndex:(NSInteger)index {
     [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
     //collectionView必须要layoutIfNeeded，否则cellForItemAtIndexPath,有可能获取到的是nil，
     [self.collectionView layoutIfNeeded];

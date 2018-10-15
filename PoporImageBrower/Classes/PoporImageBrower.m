@@ -1,13 +1,13 @@
 //
-//  SWPhotoBrowerController.m
+//  PoporImageBrower.m
 //  Demo
 //
 //  Created by 周少文 on 16/8/20.
 //  Copyright © 2016年 YiXi. All rights reserved.
 //
 
-#import "SWPhotoBrowerController.h"
-#import "SWPhotoBrowerCell.h"
+#import "PoporImageBrower.h"
+#import "PoporImageBrowerCell.h"
 #import <SDWebImage/SDImageCache.h>
 #import <SDWebImage/SDWebImageManager.h>
 #import <SDWebImage/UIView+WebCache.h>
@@ -27,7 +27,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 
 @end
 
-@interface SWPhotoBrowerController ()<UICollectionViewDelegate,UICollectionViewDataSource,UIGestureRecognizerDelegate>
+@interface PoporImageBrower ()<UICollectionViewDelegate,UICollectionViewDataSource,UIGestureRecognizerDelegate>
 
 @property (nonatomic        ) UIInterfaceOrientation        originalOrientation;
 @property (nonatomic        ) BOOL                          flag;
@@ -41,7 +41,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 //当前图片的索引
 @property (nonatomic        ) NSInteger                     index;
 @property (nonatomic,strong ) UIImageView                   *tempImageView;
-@property (nonatomic        ) SWPhotoBrowerControllerStatus photoBrowerControllerStatus;
+@property (nonatomic        ) PoporImageBrowerStatus photoBrowerControllerStatus;
 @property (nonatomic,strong ) UICollectionView              *collectionView;
 @property (nonatomic        ) UIDeviceOrientation           currentOrientation;
 @property (nonatomic,strong ) NSMutableDictionary           *originalImageViews;//原始imageView字典
@@ -51,9 +51,9 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 
 @end
 
-@implementation SWPhotoBrowerController
+@implementation PoporImageBrower
 
-- (instancetype)initWithIndex:(NSInteger)index delegate:(id<SWPhotoBrowerControllerDelegate>)delegate normalImageUrls:(NSArray<NSURL *> *)normalImageUrls bigImageUrls:(NSArray<NSURL *> *)bigImageUrls browerPresentingViewController:(UIViewController *)browerPresentingViewController {
+- (instancetype)initWithIndex:(NSInteger)index delegate:(id<PoporImageBrowerDelegate>)delegate normalImageUrls:(NSArray<NSURL *> *)normalImageUrls bigImageUrls:(NSArray<NSURL *> *)bigImageUrls browerPresentingViewController:(UIViewController *)browerPresentingViewController {
     if (normalImageUrls.count != bigImageUrls.count) {
         return nil;
     }
@@ -74,7 +74,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
     return self;
 }
 
-- (instancetype)initWithIndex:(NSInteger)index delegate:(id<SWPhotoBrowerControllerDelegate>)delegate normalImages:(NSArray<UIImage *> *)normalImages bigImages:(NSArray<UIImage *> *)bigImages browerPresentingViewController:(UIViewController *)browerPresentingViewController {
+- (instancetype)initWithIndex:(NSInteger)index delegate:(id<PoporImageBrowerDelegate>)delegate normalImages:(NSArray<UIImage *> *)normalImages bigImages:(NSArray<UIImage *> *)bigImages browerPresentingViewController:(UIViewController *)browerPresentingViewController {
     if (normalImages.count != bigImages.count) {
         return nil;
     }
@@ -97,7 +97,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 }
 
 - (void)initCommonSection {
-    NSAssert(_delegate != nil, @"SWPhotoBrowerControllerDelegate不能为空");
+    NSAssert(_delegate != nil, @"PoporImageBrowerDelegate不能为空");
     NSAssert([_delegate respondsToSelector:@selector(photoBrowerControllerOriginalImageView:withIndex:)], @"photoBrowerControllerOriginalImageView:withIndex:代理方法必须实现");
     //获取小图
     self.originalImageView  =  [_delegate photoBrowerControllerOriginalImageView:self withIndex:self.index];
@@ -148,7 +148,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
         cv.pagingEnabled                  = YES;
         cv.backgroundColor                = [UIColor clearColor];
         cv.hidden                         = YES;//一开始先隐藏浏览器,做法放大动画再显示
-        [cv registerClass:[SWPhotoBrowerCell class] forCellWithReuseIdentifier:@"cell"];
+        [cv registerClass:[PoporImageBrowerCell class] forCellWithReuseIdentifier:@"cell"];
         [self.view addSubview:cv];
         
         cv;
@@ -185,13 +185,13 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    SWPhotoBrowerCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
+    PoporImageBrowerCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
     //已知bug：cellForItemAtIndexPath这里的indexPath有可能是乱序，不能在这里进行下载
     return cell;
 }
 
 #pragma mark 设置ImageURL 或者Image
-- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(SWPhotoBrowerCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(PoporImageBrowerCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
     //    NSLog(@"%@",indexPath);
     cell.browerVC = self;
     if (self.bigImageUrls) {
@@ -207,7 +207,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
     }
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(SWPhotoBrowerCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(PoporImageBrowerCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
     NSArray<NSIndexPath *> *visibleIndexPaths = [collectionView indexPathsForVisibleItems];
     if(visibleIndexPaths.lastObject.item != indexPath.item){
         [cell.scrollView setZoomScale:1.0f animated:NO];
@@ -270,7 +270,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 
 #pragma mark 打开动画
 - (void)doPresentAnimation:(id<UIViewControllerContextTransitioning>)transitionContext {
-    self.photoBrowerControllerStatus = SWPhotoBrowerControllerWillShow;
+    self.photoBrowerControllerStatus = PoporImageBrowerWillShow;
     UIView *containerView = [transitionContext containerView];
     containerView.backgroundColor = [UIColor blackColor];
     self.containerView = containerView;
@@ -322,7 +322,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
         //显示图片浏览器
         self.collectionView.hidden = NO;
         [transitionContext completeTransition:!transitionContext.transitionWasCancelled];
-        self.photoBrowerControllerStatus = SWPhotoBrowerControllerDidShow;
+        self.photoBrowerControllerStatus = PoporImageBrowerDidShow;
         UIImageView *imageView = [self.delegate photoBrowerControllerOriginalImageView:self withIndex:self.index];
         NSString *key = [NSString stringWithFormat:@"%ld",(long)self.index];
         if(imageView.image){
@@ -335,7 +335,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 
 #pragma mark 关闭动画
 - (void)doDismissAnimation:(id<UIViewControllerContextTransitioning>)transitionContext {
-    self.photoBrowerControllerStatus = SWPhotoBrowerControllerWillHide;
+    self.photoBrowerControllerStatus = PoporImageBrowerWillHide;
     //一定要在获取到imageView的frame之前改变状态栏，否则动画会出现跳一下的现象
     if(![self isIPhoneXSeries]){
         self.statusBarHidden = NO;
@@ -348,7 +348,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
     if(_delegate && [_delegate respondsToSelector:@selector(photoBrowerControllerWillHide:withIndex:)]) {
         [_delegate photoBrowerControllerWillHide:self withIndex:_index];
     }
-    SWPhotoBrowerCell *cell = (SWPhotoBrowerCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:_index inSection:0]];
+    PoporImageBrowerCell *cell = (PoporImageBrowerCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:_index inSection:0]];
     self.tempImageView.image = cell.imagView.image;
     CGRect fromRect = [cell.imagView.superview convertRect:cell.imagView.frame toCoordinateSpace:[UIScreen mainScreen].coordinateSpace];
     self.tempImageView.frame = fromRect;
@@ -382,7 +382,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
     } completion:^(BOOL finished) {
         [fromView removeFromSuperview];
         [transitionContext completeTransition:!transitionContext.transitionWasCancelled];
-        self.photoBrowerControllerStatus = SWPhotoBrowerControllerDidHide;
+        self.photoBrowerControllerStatus = PoporImageBrowerDidHide;
         [self.originalImageViews enumerateKeysAndObjectsUsingBlock:^(NSString*  _Nonnull key, UIImageView*  _Nonnull imgV, BOOL * _Nonnull stop) {
             imgV.image = [self.originalImages objectForKey:key];
         }];
@@ -440,7 +440,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 }
 
 - (void)show {
-    if(self.photoBrowerControllerStatus != SWPhotoBrowerControllerUnShow) return;
+    if(self.photoBrowerControllerStatus != PoporImageBrowerUnShow) return;
     dispatch_async(dispatch_get_main_queue(), ^{
         self.transitioningDelegate = self;
         self.modalPresentationStyle = UIModalPresentationCustom;
@@ -450,7 +450,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 
 #pragma mark - UIGestureRecognizerDelegate 关闭手势
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
-    SWPhotoBrowerCell *cell = [[self.collectionView visibleCells] firstObject];
+    PoporImageBrowerCell *cell = [[self.collectionView visibleCells] firstObject];
     if(cell.scrollView.zoomScale > 1.0f) {
         NSLog(@"g 开始询问 NO");
         return NO;
@@ -475,7 +475,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 //这个方法返回YES，第一个和第二个互斥时，第二个会失效
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldBeRequiredToFailByGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
     //NSLog(@"g1: %@, g2: %@", NSStringFromClass([gestureRecognizer class]), NSStringFromClass([otherGestureRecognizer class]));
-    SWPhotoBrowerCell *cell = [[self.collectionView visibleCells] firstObject];
+    PoporImageBrowerCell *cell = [[self.collectionView visibleCells] firstObject];
     if(otherGestureRecognizer == cell.scrollView.panGestureRecognizer){
         if(cell.scrollView.contentOffset.y <= 0) {
             //NSLog(@"YES g1: %@, g2: %@", NSStringFromClass([gestureRecognizer class]), NSStringFromClass([otherGestureRecognizer class]));
@@ -491,7 +491,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 - (void)pullDownGRAction:(UIPanGestureRecognizer *)panGesture {
     CGPoint point = [panGesture translationInView:panGesture.view];
     CGPoint velocity = [panGesture velocityInView:panGesture.view];
-    SWPhotoBrowerCell *cell = [[self.collectionView visibleCells] firstObject];
+    PoporImageBrowerCell *cell = [[self.collectionView visibleCells] firstObject];
     switch (panGesture.state) {
         case UIGestureRecognizerStateBegan: {
             //更改状态栏

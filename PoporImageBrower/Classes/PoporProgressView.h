@@ -1,5 +1,5 @@
 //
-//  SWProgressView.h
+//  PoporProgressView.h
 //  Demo
 //
 //  Created by 周少文 on 16/8/24.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SWProgressView : UIView
+@interface PoporProgressView : UIView
 
 @property (nonatomic) CGFloat progress;
 
