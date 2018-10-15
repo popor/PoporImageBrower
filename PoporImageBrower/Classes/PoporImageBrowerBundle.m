@@ -9,6 +9,16 @@
 
 @implementation PoporImageBrowerBundle
 
++ (instancetype)share {
+    static dispatch_once_t once;
+    static PoporImageBrowerBundle * instance;
+    dispatch_once(&once, ^{
+        instance = [self new];
+        instance.placeholderImage = [PoporImageBrowerBundle imageName:@"placeholder"];
+    });
+    return instance;
+}
+
 + (NSBundle *)bundle {
     static NSBundle *refreshBundle = nil;
     if (!refreshBundle) {

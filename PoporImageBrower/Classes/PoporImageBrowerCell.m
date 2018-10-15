@@ -100,7 +100,7 @@
         if(self.browerVC.delegate && [self.browerVC.delegate respondsToSelector:@selector(photoBrowerControllerPlaceholderImageForDownloadError:)]){
             image = [self.browerVC.delegate photoBrowerControllerPlaceholderImageForDownloadError:self.browerVC];
         }else{
-            image = [PoporImageBrowerBundle imageName:@"placeholder"];
+            image = [PoporImageBrowerBundle share].placeholderImage;
         }
     }
     [self adjustImageViewWithImage:image];
@@ -130,7 +130,7 @@
             });
         } completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
             if(error){
-                [weakSelf showHUDWithMessage:@"无法加载图片" imageName:@"TipViewErrorIcon"];
+                [weakSelf showHUDWithMessage:@"无法加载图片" imageName:@"icon_fail"];
                 //                NSLog(@"------%@",imageURL);
                 return;
             }
@@ -216,7 +216,7 @@
 
 - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
     if(error) {
-        [self showHUDWithMessage:@"保存失败" imageName:@"TipViewErrorIcon"];
+        [self showHUDWithMessage:@"保存失败" imageName:@"icon_fail"];
     }else{
         [self showHUDWithMessage:@"保存成功" imageName:@"icon_success"];
     }

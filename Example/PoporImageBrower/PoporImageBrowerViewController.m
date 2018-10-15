@@ -29,6 +29,8 @@ static NSString *const Cell = @"cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.useImage = NO;
+    [PoporImageBrowerBundle share].placeholderImage = [UIImage imageNamed:@"placeholder"];
+    
     self.dataArray = @[
                        @"http://ww2.sinaimg.cn/thumbnail/9ecab84ejw1emgd5nd6eaj20c80c8q4a.jpg",
                        @"http://ww2.sinaimg.cn/thumbnail/642beb18gw1ep3629gfm0g206o050b2a.gif",
@@ -38,7 +40,8 @@ static NSString *const Cell = @"cell";
                        @"http://ww4.sinaimg.cn/thumbnail/8e88b0c1gw1e9lpr4nndfj20gy0o9q6i.jpg",
                        @"http://ww3.sinaimg.cn/thumbnail/8e88b0c1gw1e9lpr57tn9j20gy0obn0f.jpg",
                        @"http://ww2.sinaimg.cn/thumbnail/677febf5gw1erma104rhyj20k03dz16y.jpg",
-                       @"http://ww4.sinaimg.cn/thumbnail/677febf5gw1erma1g5xd0j20k0esa7wj.jpg"
+                       @"http://ww4.sinaimg.cn/thumbnail/677febf5gw1erma1g5xd0j20k0esa7wj.jpg",
+                       @"http://ww4.sinaimg.cn/thumbnail/error.jpg",
                        ];
     
     self.smallImageArray = @[

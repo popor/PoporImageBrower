@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "PoporImageEntity.h"
+#import "PoporImageBrowerBundle.h"
 
 typedef NS_ENUM(NSUInteger, PoporImageBrowerStatus) {
     PoporImageBrowerUnShow,//未显示

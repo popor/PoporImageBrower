@@ -11,6 +11,11 @@
 
 @interface PoporImageBrowerBundle : NSObject
 
+// 设置默认图片
+@property (nonatomic, strong) UIImage * placeholderImage;
+
++ (instancetype)share;
+
 + (UIImage *)imageName:(NSString *)name;
 
 @end

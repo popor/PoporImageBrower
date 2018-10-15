@@ -261,7 +261,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
                 if(_delegate && [_delegate respondsToSelector:@selector(photoBrowerControllerPlaceholderImageForDownloadError:)]){
                     image = [_delegate photoBrowerControllerPlaceholderImageForDownloadError:self];
                 }else{
-                    image = [PoporImageBrowerBundle imageName:@"placeholder"];
+                    image = [PoporImageBrowerBundle share].placeholderImage;
                 }
                 duration = 0;
             }
