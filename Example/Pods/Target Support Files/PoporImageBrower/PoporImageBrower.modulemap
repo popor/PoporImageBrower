@@ -1,0 +1,6 @@
+framework module PoporImageBrower {
+  umbrella header "PoporImageBrower-umbrella.h"
+
+  export *
+  module * { export * }
+}

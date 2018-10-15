@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'PoporImageBrower_Example' do
+  pod 'PoporImageBrower', :path => '../'
+
+  target 'PoporImageBrower_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
