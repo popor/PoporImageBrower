@@ -13,6 +13,7 @@
 #import "PoporImageBrower.h"
 #import "PoporImageBrowerBundle.h"
 #import "PoporImageBrowerCell.h"
+#import "PoporImageEntity.h"
 #import "PoporProgressView.h"
 #import "PoporShortTapGestureRecognizer.h"
 

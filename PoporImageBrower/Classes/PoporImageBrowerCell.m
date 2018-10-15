@@ -256,8 +256,8 @@
             return NO;
         }else{
             if (self.bigImageUrl || self.normalImageUrl) {
-                if (![[SDImageCache sharedImageCache] imageFromCacheForKey:self.browerVC.bigImageUrls[self.browerVC.index].absoluteString] &&
-                    ![[SDImageCache sharedImageCache] imageFromCacheForKey:self.browerVC.normalImageUrls[self.browerVC.index].absoluteString]) {
+                if (![[SDImageCache sharedImageCache] imageFromCacheForKey:self.bigImageUrl.absoluteString] &&
+                    ![[SDImageCache sharedImageCache] imageFromCacheForKey:self.normalImageUrl.absoluteString]) {
                     
                     return NO;
                 }

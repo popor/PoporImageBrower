@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "PoporImageEntity.h"
+
 typedef NS_ENUM(NSUInteger, PoporImageBrowerStatus) {
     PoporImageBrowerUnShow,//未显示
     PoporImageBrowerWillShow,//将要显示出来
@@ -66,12 +68,13 @@ extern NSTimeInterval const SWPhotoBrowerAnimationDuration;
  */
 @property (nonatomic,readonly) NSInteger index;
 
-@property (nonatomic,readonly,copy) NSArray<NSURL *> *normalImageUrls;
-@property (nonatomic,readonly,copy) NSArray<NSURL *> *bigImageUrls;
+//@property (nonatomic,readonly,copy) NSArray<NSURL *> *normalImageUrls;
+//@property (nonatomic,readonly,copy) NSArray<NSURL *> *bigImageUrls;
+//
+//@property (nonatomic,readonly,copy) NSArray<UIImage *> *normalImages;
+//@property (nonatomic,readonly,copy) NSArray<UIImage *> *bigImages;
 
-@property (nonatomic,readonly,copy) NSArray<UIImage *> *normalImages;
-@property (nonatomic,readonly,copy) NSArray<UIImage *> *bigImages;
-
+@property (nonatomic,readonly,copy) NSArray<PoporImageEntity *> * imageArray;
 /**
  小图的大小
  */
@@ -90,9 +93,8 @@ extern NSTimeInterval const SWPhotoBrowerAnimationDuration;
  @param browerPresentingViewController 在哪个控制器上弹出
  @return 图片浏览器
  */
-- (instancetype)initWithIndex:(NSInteger)index delegate:(id<PoporImageBrowerDelegate>)delegate normalImageUrls:(NSArray<NSURL *> *)normalImageUrls bigImageUrls:(NSArray<NSURL *> *)bigImageUrls browerPresentingViewController:(UIViewController *)browerPresentingViewController;
 
-- (instancetype)initWithIndex:(NSInteger)index delegate:(id<PoporImageBrowerDelegate>)delegate normalImages:(NSArray<UIImage *> *)normalImages bigImages:(NSArray<UIImage *> *)bigImages browerPresentingViewController:(UIViewController *)browerPresentingViewController;
+- (instancetype)initWithIndex:(NSInteger)index delegate:(id<PoporImageBrowerDelegate>)delegate imageArray:(NSArray<PoporImageEntity *> *)imageArray presentingVC:(UIViewController *)presentingVC;
 
 /**
  显示图片浏览器

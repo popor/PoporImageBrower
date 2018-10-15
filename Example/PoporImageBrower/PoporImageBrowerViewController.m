@@ -91,20 +91,32 @@ static NSString *const Cell = @"cell";
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     if (self.isUseImage) {
-        PoporImageBrower *photoBrower = [[PoporImageBrower alloc] initWithIndex:indexPath.item delegate:self normalImages:self.smallImageArray bigImages:self.bigImageArray browerPresentingViewController:self];
+        NSMutableArray * imageArray = [NSMutableArray new];
+        for (int i = 0;i<self.smallImageArray.count; i++) {
+            PoporImageEntity * entity = [PoporImageEntity new];
+            entity.normalImage = self.smallImageArray[i];
+            entity.bigImage    = self.bigImageArray[i];
+            
+            [imageArray addObject:entity];
+        }
+        PoporImageBrower *photoBrower = [[PoporImageBrower alloc] initWithIndex:indexPath.item delegate:self imageArray:imageArray presentingVC:self];
         // photoBrower.disablePhotoSave = YES;
         
         [photoBrower show];
         
     }else{
-        NSMutableArray *normalImageUrls = [NSMutableArray arrayWithCapacity:0];
-        NSMutableArray *bigImageUrls = [NSMutableArray arrayWithCapacity:0];
+        NSMutableArray * imageArray = [NSMutableArray new];
+        
         [self.dataArray enumerateObjectsUsingBlock:^(NSString*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            [normalImageUrls addObject:[NSURL URLWithString:obj]];
             NSString *str = [obj stringByReplacingOccurrencesOfString:@"thumbnail" withString:@"bmiddle"];
-            [bigImageUrls addObject:[NSURL URLWithString:str]];
+            
+            PoporImageEntity * entity = [PoporImageEntity new];
+            entity.normalImageUrl = [NSURL URLWithString:obj];
+            entity.bigImageUrl    = [NSURL URLWithString:str];
+            
+            [imageArray addObject:entity];
         }];
-        PoporImageBrower *photoBrower = [[PoporImageBrower alloc] initWithIndex:indexPath.item delegate:self normalImageUrls:[normalImageUrls copy] bigImageUrls:[bigImageUrls copy] browerPresentingViewController:self];
+        PoporImageBrower *photoBrower = [[PoporImageBrower alloc] initWithIndex:indexPath.item delegate:self imageArray:imageArray presentingVC:self];
         // photoBrower.disablePhotoSave = YES;
         
         [photoBrower show];

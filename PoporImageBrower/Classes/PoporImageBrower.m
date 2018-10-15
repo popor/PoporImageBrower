@@ -53,41 +53,15 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 
 @implementation PoporImageBrower
 
-- (instancetype)initWithIndex:(NSInteger)index delegate:(id<PoporImageBrowerDelegate>)delegate normalImageUrls:(NSArray<NSURL *> *)normalImageUrls bigImageUrls:(NSArray<NSURL *> *)bigImageUrls browerPresentingViewController:(UIViewController *)browerPresentingViewController {
-    if (normalImageUrls.count != bigImageUrls.count) {
-        return nil;
-    }
-    
+- (instancetype)initWithIndex:(NSInteger)index delegate:(id<PoporImageBrowerDelegate>)delegate imageArray:(NSArray<PoporImageEntity *> *)imageArray presentingVC:(UIViewController *)presentingVC {
     if(self = [super initWithNibName:nil bundle:nil]) {
-        NSAssert(browerPresentingViewController != nil, @"browerPresentingViewController不能为nil");
-        _browerPresentingViewController = browerPresentingViewController;
+        NSAssert(presentingVC != nil, @"browerPresentingViewController不能为nil");
+        _browerPresentingViewController = presentingVC;
         //保存原来的屏幕旋转状态
-        self.originalOrientation = [[browerPresentingViewController valueForKey:@"interfaceOrientation"] integerValue];
-        self.delegate = delegate;
-        _index           = index;
-        _normalImageUrls = normalImageUrls;
-        _bigImageUrls    = bigImageUrls ? bigImageUrls : normalImageUrls;
-        
-        [self initCommonSection];
-    }
-    
-    return self;
-}
-
-- (instancetype)initWithIndex:(NSInteger)index delegate:(id<PoporImageBrowerDelegate>)delegate normalImages:(NSArray<UIImage *> *)normalImages bigImages:(NSArray<UIImage *> *)bigImages browerPresentingViewController:(UIViewController *)browerPresentingViewController {
-    if (normalImages.count != bigImages.count) {
-        return nil;
-    }
-    
-    if(self = [super initWithNibName:nil bundle:nil]) {
-        NSAssert(browerPresentingViewController != nil, @"browerPresentingViewController不能为nil");
-        _browerPresentingViewController = browerPresentingViewController;
-        //保存原来的屏幕旋转状态
-        self.originalOrientation = [[browerPresentingViewController valueForKey:@"interfaceOrientation"] integerValue];
+        self.originalOrientation = [[presentingVC valueForKey:@"interfaceOrientation"] integerValue];
         self.delegate = delegate;
         _index        = index;
-        _normalImages = normalImages;
-        _bigImages    = bigImages ? bigImages : normalImages;
+        _imageArray   = imageArray;
         
         [self initCommonSection];
     }
@@ -175,13 +149,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    if (self.bigImageUrls) {
-        return self.bigImageUrls.count;
-    }else if(self.bigImages){
-        return self.bigImages.count;
-    }else{
-        return 0;
-    }
+    return self.imageArray.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -194,16 +162,16 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(PoporImageBrowerCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
     //    NSLog(@"%@",indexPath);
     cell.browerVC = self;
-    if (self.bigImageUrls) {
-        //先设置小图
-        cell.normalImageUrl = self.normalImageUrls[indexPath.row];
-        //后设置大图
-        cell.bigImageUrl    = self.bigImageUrls[indexPath.row];
-    }else if(self.bigImages){
-        
-        [cell adjustImageViewWithImage:self.bigImages[indexPath.row]];
+    PoporImageEntity * entity = self.imageArray[indexPath.row];
+    if (entity.isUseImage) {
+        [cell adjustImageViewWithImage:entity.bigImage];
         //开启缩放
         cell.scrollView.maximumZoomScale = 2.0f;
+    }else{
+        //先设置小图
+        cell.normalImageUrl = entity.normalImageUrl;
+        //后设置大图
+        cell.bigImageUrl    = entity.bigImageUrl;
     }
 }
 
@@ -279,15 +247,16 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
     [containerView addSubview:toView];
     
     CGFloat duration = SWPhotoBrowerAnimationDuration;
+    PoporImageEntity * entity = self.imageArray[_index];
     UIImage *image;
-    if (_bigImageUrls) {
-        NSURL *imageUrl = _bigImageUrls[_index];
-        //从缓存中获取大图
-        image = [[SDImageCache sharedImageCache] imageFromCacheForKey:imageUrl.absoluteString];
+    if (entity.isUseImage) {
+        image = entity.normalImage ? : entity.normalImage;
+    }else{
+        //先从缓存中获取大图
+        image = [[SDImageCache sharedImageCache] imageFromCacheForKey:entity.bigImageUrl.absoluteString];
         
         if(image == nil){
-            NSURL *normalImgUrl = _normalImageUrls[_index];
-            image = [[SDImageCache sharedImageCache] imageFromCacheForKey:normalImgUrl.absoluteString];
+            image = [[SDImageCache sharedImageCache] imageFromCacheForKey:entity.normalImageUrl.absoluteString];
             if(image == nil){//小图大图都没有找到
                 if(_delegate && [_delegate respondsToSelector:@selector(photoBrowerControllerPlaceholderImageForDownloadError:)]){
                     image = [_delegate photoBrowerControllerPlaceholderImageForDownloadError:self];
@@ -297,8 +266,6 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
                 duration = 0;
             }
         }
-    }else{
-        image = _bigImages[_index];
     }
     
     //获取转换之后的坐标
@@ -360,13 +327,15 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
     _normalImageViewSize = imageView.frame.size;
     CGRect convertFrame = [imageView.superview convertRect:imageView.frame toCoordinateSpace:[UIScreen mainScreen].coordinateSpace];
     CGFloat duration = SWPhotoBrowerAnimationDuration;
-    if (_bigImageUrls || _normalImageUrls) {
-        if(![[SDImageCache sharedImageCache] imageFromCacheForKey:_bigImageUrls[_index].absoluteString] &&
-           ![[SDImageCache sharedImageCache] imageFromCacheForKey:_normalImageUrls[_index].absoluteString]){
+    
+    PoporImageEntity * entity = self.imageArray[_index];
+    if (entity.isUseImage) {
+        
+    }else{
+        if(![[SDImageCache sharedImageCache] imageFromCacheForKey:entity.bigImageUrl.absoluteString] &&
+           ![[SDImageCache sharedImageCache] imageFromCacheForKey:entity.normalImageUrl.absoluteString]){
             duration = 0;
         }
-    }else{
-        
     }
     
     if(CGRectEqualToRect(convertFrame, CGRectZero)){
@@ -452,22 +421,23 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
     PoporImageBrowerCell *cell = [[self.collectionView visibleCells] firstObject];
     if(cell.scrollView.zoomScale > 1.0f) {
-        NSLog(@"g 开始询问 NO");
+        //NSLog(@"g 开始询问 NO");
         return NO;
     }
     CGPoint velocity = [self.panGesture velocityInView:self.panGesture.view];
     if(velocity.y < 0){
         return NO;//禁止上滑
     }
-    if (_bigImageUrls || _normalImageUrls) {
-        if(![[SDImageCache sharedImageCache] imageFromCacheForKey:_bigImageUrls[_index].absoluteString] &&
-           ![[SDImageCache sharedImageCache] imageFromCacheForKey:_normalImageUrls[_index].absoluteString]){
+    
+    PoporImageEntity * entity = self.imageArray[_index];
+    if (entity.isUseImage) {
+        
+    }else{
+        if(![[SDImageCache sharedImageCache] imageFromCacheForKey:entity.bigImageUrl.absoluteString] &&
+           ![[SDImageCache sharedImageCache] imageFromCacheForKey:entity.normalImageUrl.absoluteString]){
             return NO;
         }
     }
-    //    else if (_normalImages || _bigImages){
-    //
-    //    }
     
     return YES;
 }
