@@ -96,7 +96,7 @@ static NSString *const Cell = @"cell";
     NSMutableArray * imageArray = [NSMutableArray new];
     if (self.isUseImage) {
         for (int i = 0;i<self.smallImageArray.count; i++) {
-            PoporImageEntity * entity = [PoporImageEntity new];
+            PoporImageBrowerEntity * entity = [PoporImageBrowerEntity new];
             entity.normalImage = self.smallImageArray[i];
             entity.bigImage    = self.bigImageArray[i];
             
@@ -106,7 +106,7 @@ static NSString *const Cell = @"cell";
         [self.dataArray enumerateObjectsUsingBlock:^(NSString*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             NSString *str = [obj stringByReplacingOccurrencesOfString:@"thumbnail" withString:@"bmiddle"];
             
-            PoporImageEntity * entity = [PoporImageEntity new];
+            PoporImageBrowerEntity * entity = [PoporImageBrowerEntity new];
             entity.normalImageUrl = [NSURL URLWithString:obj];
             entity.bigImageUrl    = [NSURL URLWithString:str];
             

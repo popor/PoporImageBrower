@@ -9,7 +9,7 @@
 #import "PoporImageBrowerCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "PoporImageBrower.h"
-#import "PoporProgressView.h"
+#import "PoporImageBrowerProgressView.h"
 #import <SDWebImage/SDWebImageManager.h>
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "PoporShortTapGestureRecognizer.h"
@@ -21,7 +21,7 @@
     __weak id _observer;
     UILongPressGestureRecognizer *_longPress;
 }
-@property (nonatomic,strong) PoporProgressView *progressView;
+@property (nonatomic,strong) PoporImageBrowerProgressView *progressView;
 @property (nonatomic) UIDeviceOrientation currentOrientation;
 
 @end
@@ -79,9 +79,9 @@
     return _scrollView;
 }
 
-- (PoporProgressView *)progressView {
+- (PoporImageBrowerProgressView *)progressView {
     if(!_progressView) {
-        _progressView = [PoporProgressView progressView];
+        _progressView = [PoporImageBrowerProgressView progressView];
     }
     
     return _progressView;

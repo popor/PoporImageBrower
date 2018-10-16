@@ -54,7 +54,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 @implementation PoporImageBrower
 
 - (instancetype)initWithIndex:(NSInteger)index
-                   imageArray:(NSArray<PoporImageEntity *> *)imageArray
+                   imageArray:(NSArray<PoporImageBrowerEntity *> *)imageArray
                  presentingVC:(UIViewController *)presentingVC
              originImageBlock:(PoporImageBrowerOriginImageBlock _Nonnull)originImageBlock
                disappearBlock:(PoporImageBrowerDisappearBlock _Nullable)disappearBlock
@@ -175,7 +175,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(PoporImageBrowerCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
     //    NSLog(@"%@",indexPath);
     cell.browerVC = self;
-    PoporImageEntity * entity = self.imageArray[indexPath.row];
+    PoporImageBrowerEntity * entity = self.imageArray[indexPath.row];
     if (entity.isUseImage) {
         [cell adjustImageViewWithImage:entity.bigImage];
         //开启缩放
@@ -262,7 +262,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
     [containerView addSubview:toView];
     
     CGFloat duration = SWPhotoBrowerAnimationDuration;
-    PoporImageEntity * entity = self.imageArray[_index];
+    PoporImageBrowerEntity * entity = self.imageArray[_index];
     UIImage *image;
     if (entity.isUseImage) {
         image = entity.normalImage ? : entity.normalImage;
@@ -347,7 +347,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
     CGRect convertFrame = [imageView.superview convertRect:imageView.frame toCoordinateSpace:[UIScreen mainScreen].coordinateSpace];
     CGFloat duration = SWPhotoBrowerAnimationDuration;
     
-    PoporImageEntity * entity = self.imageArray[_index];
+    PoporImageBrowerEntity * entity = self.imageArray[_index];
     if (entity.isUseImage) {
         
     }else{
@@ -448,7 +448,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
         return NO;//禁止上滑
     }
     
-    PoporImageEntity * entity = self.imageArray[_index];
+    PoporImageBrowerEntity * entity = self.imageArray[_index];
     if (entity.isUseImage) {
         
     }else{

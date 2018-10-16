@@ -13,8 +13,8 @@
 #import "PoporImageBrower.h"
 #import "PoporImageBrowerBundle.h"
 #import "PoporImageBrowerCell.h"
-#import "PoporImageEntity.h"
-#import "PoporProgressView.h"
+#import "PoporImageBrowerEntity.h"
+#import "PoporImageBrowerProgressView.h"
 #import "PoporShortTapGestureRecognizer.h"
 
 FOUNDATION_EXPORT double PoporImageBrowerVersionNumber;

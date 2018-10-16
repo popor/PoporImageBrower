@@ -1,14 +1,14 @@
 //
-//  PoporProgressView.m
+//  PoporImageBrowerProgressView.m
 //  Demo
 //
 //  Created by 周少文 on 16/8/24.
 //  Copyright © 2016年 YiXi. All rights reserved.
 //
 
-#import "PoporProgressView.h"
+#import "PoporImageBrowerProgressView.h"
 
-@implementation PoporProgressView {
+@implementation PoporImageBrowerProgressView {
     __weak id _observer;
 }
 
@@ -28,7 +28,7 @@
 }
 
 + (instancetype)progressView {
-    PoporProgressView *view = [[self alloc] initWithFrame:CGRectMake(0, 0, 96/2.0f, 96/2.0f)];
+    PoporImageBrowerProgressView *view = [[self alloc] initWithFrame:CGRectMake(0, 0, 96/2.0f, 96/2.0f)];
     return view;
 }
 

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "PoporImageEntity.h"
+#import "PoporImageBrowerEntity.h"
 
 @class PoporImageBrower;
 

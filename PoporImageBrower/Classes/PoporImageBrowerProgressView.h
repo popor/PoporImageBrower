@@ -1,5 +1,5 @@
 //
-//  PoporProgressView.h
+//  PoporImageBrowerProgressView.h
 //  Demo
 //
 //  Created by 周少文 on 16/8/24.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PoporProgressView : UIView
+@interface PoporImageBrowerProgressView : UIView
 
 @property (nonatomic) CGFloat progress;
 

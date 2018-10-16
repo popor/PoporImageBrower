@@ -1,6 +1,6 @@
 //
-//  PoporImageEntity.h
-//  MBProgressHUD
+//  PoporImageBrowerEntity.h
+//  PoporImageBrowerEntity
 //
 //  Created by apple on 2018/10/15.
 //
@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PoporImageEntity : NSObject
+@interface PoporImageBrowerEntity : NSObject
 
 @property (nonatomic, strong) UIImage * normalImage;
 @property (nonatomic, strong) UIImage * bigImage; // 假如只有一个图片,那么必须要设置大图

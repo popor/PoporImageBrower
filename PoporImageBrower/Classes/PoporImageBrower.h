@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "PoporImageEntity.h"
+#import "PoporImageBrowerEntity.h"
 #import "PoporImageBrowerBundle.h"
 
 typedef NS_ENUM(NSUInteger, PoporImageBrowerStatus) {
@@ -45,7 +45,7 @@ typedef UIImage *    (^PoporImageBrowerPlaceholderImageBlock)(PoporImageBrower *
  */
 @property (nonatomic,readonly) NSInteger index;
 
-@property (nonatomic,readonly,copy) NSArray<PoporImageEntity *> * imageArray;
+@property (nonatomic,readonly,copy) NSArray<PoporImageBrowerEntity *> * imageArray;
 /**
  小图的大小
  */
@@ -55,7 +55,7 @@ typedef UIImage *    (^PoporImageBrowerPlaceholderImageBlock)(PoporImageBrower *
 @property (nonatomic) BOOL showDownloadImageError;//是否显示下载图片出错信息, 默认为YES
 
 - (instancetype)initWithIndex:(NSInteger)index
-                   imageArray:(NSArray<PoporImageEntity *> *)imageArray
+                   imageArray:(NSArray<PoporImageBrowerEntity *> *)imageArray
                  presentingVC:(UIViewController *)presentingVC
              originImageBlock:(PoporImageBrowerOriginImageBlock _Nonnull)originImageBlock
                disappearBlock:(PoporImageBrowerDisappearBlock _Nullable)disappearBlock
