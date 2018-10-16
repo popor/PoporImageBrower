@@ -23,38 +23,15 @@ typedef NS_ENUM(NSUInteger, PoporImageBrowerStatus) {
 
 extern NSTimeInterval const SWPhotoBrowerAnimationDuration;
 
-@protocol PoporImageBrowerDelegate <NSObject>
-
-@required
-
-/**
- 从哪个原始的UIImageView显示放大动画
-
- @param browerController 图片浏览器
- @param index 当前图片索引
- @return 原始的UIImageView
- */
-- (UIImageView *)photoBrowerControllerOriginalImageView:(PoporImageBrower *)browerController withIndex:(NSInteger)index;
-
-@optional
-/**
- 图片浏览器即将执行消失动画
- 
- @param browerController 图片浏览器
- @param index 当前图片索引
- */
-- (void)photoBrowerControllerWillHide:(PoporImageBrower *)browerController withIndex:(NSInteger)index;
-/**
- 下载失败的占位图
-
- @param browerController 图片浏览器
- @return 占位图
- */
-- (UIImage *)photoBrowerControllerPlaceholderImageForDownloadError:(PoporImageBrower *)browerController;
-
-@end
+typedef UIImageView *(^PoporImageBrowerOriginImageBlock)(PoporImageBrower *browerController, NSInteger index);
+typedef void         (^PoporImageBrowerDisappearBlock)(PoporImageBrower *browerController, NSInteger index);
+typedef UIImage *    (^PoporImageBrowerPlaceholderImageBlock)(PoporImageBrower *browerController);
 
 @interface PoporImageBrower : UIViewController<UIViewControllerTransitioningDelegate,UIViewControllerAnimatedTransitioning>
+
+@property (nonatomic, copy  ) PoporImageBrowerOriginImageBlock      originImageBlock;
+@property (nonatomic, copy  ) PoporImageBrowerDisappearBlock        disappearBlock;
+@property (nonatomic, copy  ) PoporImageBrowerPlaceholderImageBlock placeholderImageBlock;
 
 //保存是哪个控制器弹出的图片浏览器,解决self.presentingViewController在未present之前取到的值为nil的情况
 @property (nonatomic,weak,readonly) UIViewController *browerPresentingViewController;
@@ -63,7 +40,6 @@ extern NSTimeInterval const SWPhotoBrowerAnimationDuration;
  */
 @property (nonatomic,readonly) PoporImageBrowerStatus photoBrowerControllerStatus;
 
-@property (nonatomic,weak) id<PoporImageBrowerDelegate> delegate;
 /**
  当前图片的索引
  */
@@ -74,12 +50,16 @@ extern NSTimeInterval const SWPhotoBrowerAnimationDuration;
  小图的大小
  */
 @property (nonatomic,readonly) CGSize normalImageViewSize;
-/**
- 是否禁止保存图片
- */
-@property (nonatomic) BOOL disablePhotoSave;
 
-- (instancetype)initWithIndex:(NSInteger)index delegate:(id<PoporImageBrowerDelegate>)delegate imageArray:(NSArray<PoporImageEntity *> *)imageArray presentingVC:(UIViewController *)presentingVC;
+@property (nonatomic) BOOL saveImageEnable; //是否禁止保存图片, 默认为YES
+@property (nonatomic) BOOL showDownloadImageError;//是否显示下载图片出错信息, 默认为YES
+
+- (instancetype)initWithIndex:(NSInteger)index
+                   imageArray:(NSArray<PoporImageEntity *> *)imageArray
+                 presentingVC:(UIViewController *)presentingVC
+             originImageBlock:(PoporImageBrowerOriginImageBlock _Nonnull)originImageBlock
+               disappearBlock:(PoporImageBrowerDisappearBlock _Nullable)disappearBlock
+        placeholderImageBlock:(PoporImageBrowerPlaceholderImageBlock _Nullable)placeholderImageBlock;
 
 /**
  显示图片浏览器

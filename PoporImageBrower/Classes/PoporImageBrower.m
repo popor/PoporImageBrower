@@ -53,15 +53,28 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 
 @implementation PoporImageBrower
 
-- (instancetype)initWithIndex:(NSInteger)index delegate:(id<PoporImageBrowerDelegate>)delegate imageArray:(NSArray<PoporImageEntity *> *)imageArray presentingVC:(UIViewController *)presentingVC {
+- (instancetype)initWithIndex:(NSInteger)index
+                   imageArray:(NSArray<PoporImageEntity *> *)imageArray
+                 presentingVC:(UIViewController *)presentingVC
+             originImageBlock:(PoporImageBrowerOriginImageBlock _Nonnull)originImageBlock
+               disappearBlock:(PoporImageBrowerDisappearBlock _Nullable)disappearBlock
+       placeholderImageBlock:(PoporImageBrowerPlaceholderImageBlock _Nullable)placeholderImageBlock
+{
+    
     if(self = [super initWithNibName:nil bundle:nil]) {
         NSAssert(presentingVC != nil, @"browerPresentingViewController不能为nil");
         _browerPresentingViewController = presentingVC;
         //保存原来的屏幕旋转状态
         self.originalOrientation = [[presentingVC valueForKey:@"interfaceOrientation"] integerValue];
-        self.delegate = delegate;
-        _index        = index;
-        _imageArray   = imageArray;
+        _index                   = index;
+        _imageArray              = imageArray;
+
+        _originImageBlock        = originImageBlock;
+        _disappearBlock          = disappearBlock;
+        _placeholderImageBlock   = placeholderImageBlock;
+
+        _saveImageEnable         = YES;
+        _showDownloadImageError  = YES;
         
         [self initCommonSection];
     }
@@ -71,10 +84,10 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 }
 
 - (void)initCommonSection {
-    NSAssert(_delegate != nil, @"PoporImageBrowerDelegate不能为空");
-    NSAssert([_delegate respondsToSelector:@selector(photoBrowerControllerOriginalImageView:withIndex:)], @"photoBrowerControllerOriginalImageView:withIndex:代理方法必须实现");
     //获取小图
-    self.originalImageView  =  [_delegate photoBrowerControllerOriginalImageView:self withIndex:self.index];
+    self.originalImageView  = self.originImageBlock(self, self.index);
+    //[_delegate photoBrowerControllerOriginalImageView:self withIndex:self.index];
+    
     _normalImageViewSize    = self.originalImageView.frame.size;
     self.currentOrientation = [UIDevice currentDevice].orientation;
     __weak typeof(self) weakSelf = self;
@@ -186,7 +199,9 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
     NSInteger index = ABS(targetContentOffset->x/(self.view.frame.size.width + 16));
     self.index = index;
-    UIImageView *imageView = [_delegate photoBrowerControllerOriginalImageView:self withIndex:index];
+    UIImageView *imageView = self.originImageBlock(self, index);
+    //[_delegate photoBrowerControllerOriginalImageView:self withIndex:index];
+    
     [self.originalImageViews enumerateKeysAndObjectsUsingBlock:^(NSString*  _Nonnull key, UIImageView*  _Nonnull imgV, BOOL * _Nonnull stop) {
         imgV.image = [self.originalImages objectForKey:key];
     }];
@@ -258,10 +273,8 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
         if(image == nil){
             image = [[SDImageCache sharedImageCache] imageFromCacheForKey:entity.normalImageUrl.absoluteString];
             if(image == nil){//小图大图都没有找到
-                if(_delegate && [_delegate respondsToSelector:@selector(photoBrowerControllerPlaceholderImageForDownloadError:)]){
-                    image = [_delegate photoBrowerControllerPlaceholderImageForDownloadError:self];
-                }else{
-                    image = [PoporImageBrowerBundle share].placeholderImage;
+                if (self.placeholderImageBlock) {
+                    image = self.placeholderImageBlock(self);
                 }
                 duration = 0;
             }
@@ -290,7 +303,9 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
         self.collectionView.hidden = NO;
         [transitionContext completeTransition:!transitionContext.transitionWasCancelled];
         self.photoBrowerControllerStatus = PoporImageBrowerDidShow;
-        UIImageView *imageView = [self.delegate photoBrowerControllerOriginalImageView:self withIndex:self.index];
+        UIImageView *imageView = self.originImageBlock(self, self.index);
+        //[self.delegate photoBrowerControllerOriginalImageView:self withIndex:self.index];
+        
         NSString *key = [NSString stringWithFormat:@"%ld",(long)self.index];
         if(imageView.image){
             [self.originalImages setObject:imageView.image forKey:key];
@@ -312,8 +327,10 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
     //获取当前屏幕可见cell的indexPath
     NSIndexPath *visibleIndexPath = self.collectionView.indexPathsForVisibleItems.lastObject;
     _index = visibleIndexPath.item;
-    if(_delegate && [_delegate respondsToSelector:@selector(photoBrowerControllerWillHide:withIndex:)]) {
-        [_delegate photoBrowerControllerWillHide:self withIndex:_index];
+    
+    // MARK: 销毁
+    if (self.disappearBlock) {
+        self.disappearBlock(self, _index);
     }
     PoporImageBrowerCell *cell = (PoporImageBrowerCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:_index inSection:0]];
     self.tempImageView.image = cell.imagView.image;
@@ -323,7 +340,9 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
     UIView *containerView = [transitionContext containerView];
     UIView *fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
     [fromView addSubview:self.tempImageView];
-    UIImageView *imageView = [_delegate photoBrowerControllerOriginalImageView:self withIndex:_index];
+    UIImageView *imageView = self.originImageBlock(self, self.index);
+    //[_delegate photoBrowerControllerOriginalImageView:self withIndex:_index];
+    
     _normalImageViewSize = imageView.frame.size;
     CGRect convertFrame = [imageView.superview convertRect:imageView.frame toCoordinateSpace:[UIScreen mainScreen].coordinateSpace];
     CGFloat duration = SWPhotoBrowerAnimationDuration;

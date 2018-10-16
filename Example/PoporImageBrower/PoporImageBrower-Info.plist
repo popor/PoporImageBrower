@@ -47,5 +47,10 @@
 	</array>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>需要您的同意才能访问您的照片</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 </dict>
 </plist>

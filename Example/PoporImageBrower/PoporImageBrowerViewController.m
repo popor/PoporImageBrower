@@ -13,7 +13,7 @@
 
 static NSString *const Cell = @"cell";
 
-@interface PoporImageBrowerViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, PoporImageBrowerDelegate>
+@interface PoporImageBrowerViewController ()<UICollectionViewDelegate, UICollectionViewDataSource>
 
 @property (nonatomic, getter=isUseImage) BOOL useImage;
 @property (nonatomic, strong) UICollectionView * collectionView;
@@ -29,7 +29,6 @@ static NSString *const Cell = @"cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.useImage = NO;
-    [PoporImageBrowerBundle share].placeholderImage = [UIImage imageNamed:@"placeholder"];
     
     self.dataArray = @[
                        @"http://ww2.sinaimg.cn/thumbnail/9ecab84ejw1emgd5nd6eaj20c80c8q4a.jpg",
@@ -93,8 +92,9 @@ static NSString *const Cell = @"cell";
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+    NSMutableArray * imageArray = [NSMutableArray new];
     if (self.isUseImage) {
-        NSMutableArray * imageArray = [NSMutableArray new];
         for (int i = 0;i<self.smallImageArray.count; i++) {
             PoporImageEntity * entity = [PoporImageEntity new];
             entity.normalImage = self.smallImageArray[i];
@@ -102,14 +102,7 @@ static NSString *const Cell = @"cell";
             
             [imageArray addObject:entity];
         }
-        PoporImageBrower *photoBrower = [[PoporImageBrower alloc] initWithIndex:indexPath.item delegate:self imageArray:imageArray presentingVC:self];
-        // photoBrower.disablePhotoSave = YES;
-        
-        [photoBrower show];
-        
     }else{
-        NSMutableArray * imageArray = [NSMutableArray new];
-        
         [self.dataArray enumerateObjectsUsingBlock:^(NSString*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             NSString *str = [obj stringByReplacingOccurrencesOfString:@"thumbnail" withString:@"bmiddle"];
             
@@ -119,24 +112,24 @@ static NSString *const Cell = @"cell";
             
             [imageArray addObject:entity];
         }];
-        PoporImageBrower *photoBrower = [[PoporImageBrower alloc] initWithIndex:indexPath.item delegate:self imageArray:imageArray presentingVC:self];
-        // photoBrower.disablePhotoSave = YES;
-        
-        [photoBrower show];
     }
-}
-
-#pragma mark - PoporImageBrowerDelegate
-- (UIImageView *)photoBrowerControllerOriginalImageView:(PoporImageBrower *)browerController withIndex:(NSInteger)index {
-    //cellForItemAtIndexPath:The cell object at the corresponding index path or nil if the cell is not visible or indexPath is out of range.
-    MyCollectionViewCell *cell = (MyCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]];
-    return cell.imgV;
-}
-
-- (void)photoBrowerControllerWillHide:(PoporImageBrower *)browerController withIndex:(NSInteger)index {
-    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
-    //collectionView必须要layoutIfNeeded，否则cellForItemAtIndexPath,有可能获取到的是nil，
-    [self.collectionView layoutIfNeeded];
+    
+    __weak typeof(self) weakSelf = self;
+    PoporImageBrower *photoBrower = [[PoporImageBrower alloc] initWithIndex:indexPath.item imageArray:imageArray presentingVC:self originImageBlock:^UIImageView *(PoporImageBrower *browerController, NSInteger index) {
+        MyCollectionViewCell *cell = (MyCollectionViewCell *)[weakSelf.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]];
+        return cell.imgV;
+        
+    } disappearBlock:^(PoporImageBrower *browerController, NSInteger index) {
+        [weakSelf.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
+        //collectionView必须要layoutIfNeeded，否则cellForItemAtIndexPath,有可能获取到的是nil，
+        [weakSelf.collectionView layoutIfNeeded];
+        
+    } placeholderImageBlock:^UIImage *(PoporImageBrower *browerController) {
+        //return [UIImage imageNamed:@"placeholder"];
+        return nil;
+    }];
+    
+    [photoBrower show];
 }
 
 - (BOOL)prefersStatusBarHidden {

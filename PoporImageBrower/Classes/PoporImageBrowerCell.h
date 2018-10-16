@@ -19,8 +19,6 @@
 @property (nonatomic, strong) NSURL            *normalImageUrl;
 @property (nonatomic, weak  ) PoporImageBrower *browerVC;
 
-//@property (nonatomic        ) BOOL                    imageDataUrl;
-
 - (void)adjustImageViewWithImage:(UIImage *)image;
 
 @end

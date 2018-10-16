@@ -97,10 +97,8 @@
     CGFloat offY = ([UIScreen mainScreen].bounds.size.height - size.height)*0.5f;
     offY = offY < 0 ? 0 : offY;
     if(image == nil){
-        if(self.browerVC.delegate && [self.browerVC.delegate respondsToSelector:@selector(photoBrowerControllerPlaceholderImageForDownloadError:)]){
-            image = [self.browerVC.delegate photoBrowerControllerPlaceholderImageForDownloadError:self.browerVC];
-        }else{
-            image = [PoporImageBrowerBundle share].placeholderImage;
+        if (self.browerVC.placeholderImageBlock) {
+            image = self.browerVC.placeholderImageBlock(self.browerVC);
         }
     }
     [self adjustImageViewWithImage:image];
@@ -130,9 +128,12 @@
             });
         } completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
             if(error){
-                [weakSelf showHUDWithMessage:@"无法加载图片" imageName:@"icon_fail"];
-                //                NSLog(@"------%@",imageURL);
-                return;
+                if (weakSelf.browerVC.showDownloadImageError) {
+                    [weakSelf showHUDWithMessage:@"无法加载图片" imageName:@"icon_fail"];
+                    // NSLog(@"------%@",imageURL);
+                    return;
+                }
+                
             }
             weakSelf.scrollView.maximumZoomScale = 2.0f;
             [weakSelf adjustImageViewWithImage:image];
@@ -252,9 +253,7 @@
 #pragma mark - UIGestureRecognizerDelegate
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
     if(gestureRecognizer == _longPress){
-        if (self.browerVC.disablePhotoSave) {
-            return NO;
-        }else{
+        if (self.browerVC.saveImageEnable) {
             if (self.bigImageUrl || self.normalImageUrl) {
                 if (![[SDImageCache sharedImageCache] imageFromCacheForKey:self.bigImageUrl.absoluteString] &&
                     ![[SDImageCache sharedImageCache] imageFromCacheForKey:self.normalImageUrl.absoluteString]) {
@@ -262,7 +261,8 @@
                     return NO;
                 }
             }
-            return YES;
+        }else{
+            return NO;
         }
     }
     
