@@ -55,7 +55,19 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 @implementation PoporImageBrower
 
 - (instancetype)initWithIndex:(NSInteger)index
-                   imageArray:(NSArray<PoporImageBrowerEntity *> *)imageArray
+               copyImageArray:(NSArray<PoporImageBrowerEntity *> *)copyImageArray
+                    presentVC:(UIViewController *)presentVC
+             originImageBlock:(PoporImageBrowerOriginImageBlock _Nonnull)originImageBlock
+               disappearBlock:(PoporImageBrowerDisappearBlock _Nullable)disappearBlock
+        placeholderImageBlock:(PoporImageBrowerPlaceholderImageBlock _Nullable)placeholderImageBlock
+{
+    return [self initWithIndex:index copyImageArray:copyImageArray weakImageArray:nil presentVC:presentVC originImageBlock:originImageBlock disappearBlock:disappearBlock placeholderImageBlock:placeholderImageBlock];
+}
+
+// weakImageArray, 用于第二次开发
+- (instancetype)initWithIndex:(NSInteger)index
+               copyImageArray:(NSArray<PoporImageBrowerEntity *> *)copyImageArray
+               weakImageArray:(NSArray<PoporImageBrowerEntity *> *)weakImageArray
                     presentVC:(UIViewController *)presentVC
              originImageBlock:(PoporImageBrowerOriginImageBlock _Nonnull)originImageBlock
                disappearBlock:(PoporImageBrowerDisappearBlock _Nullable)disappearBlock
@@ -68,21 +80,17 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
         //保存原来的屏幕旋转状态
         self.originalOrientation = [[presentVC valueForKey:@"interfaceOrientation"] integerValue];
         _index                   = index;
-        _imageArray              = imageArray;
-        // checkImageEntity
-        for (PoporImageBrowerEntity * entity in _imageArray) {
-            if (entity.isUseImage) {
-                entity.smallImage    = entity.smallImage?:entity.bigImage;
-                entity.bigImage       = entity.bigImage?:entity.smallImage;
-            }else{
-                entity.smallImageUrl = entity.smallImageUrl?:entity.bigImageUrl;
-                entity.bigImageUrl    = entity.bigImageUrl?:entity.smallImageUrl;
-            }
+        _copyImageArray          = copyImageArray;
+        if (weakImageArray) {
+            _weakImageArray      = weakImageArray;
+        }else{
+            _weakImageArray      = _copyImageArray;
         }
+        
         _originImageBlock        = originImageBlock;
         _disappearBlock          = disappearBlock;
         _placeholderImageBlock   = placeholderImageBlock;
-
+        
         _saveImageEnable         = YES;
         _showDownloadImageError  = YES;
         
@@ -90,10 +98,18 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
     }
     
     return self;
-    
 }
-
 - (void)initCommonSection {
+    // checkImageEntity
+    for (PoporImageBrowerEntity * entity in self.weakImageArray) {
+        if (entity.isUseImage) {
+            entity.smallImage    = entity.smallImage?:entity.bigImage;
+            entity.bigImage      = entity.bigImage?:entity.smallImage;
+        }else{
+            entity.smallImageUrl = entity.smallImageUrl?:entity.bigImageUrl;
+            entity.bigImageUrl   = entity.bigImageUrl?:entity.smallImageUrl;
+        }
+    }
     //获取小图
     self.originalImageView  = self.originImageBlock(self, self.index);
     //[_delegate photoBrowerControllerOriginalImageView:self withIndex:self.index];
@@ -173,7 +189,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return self.imageArray.count;
+    return self.weakImageArray.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -186,7 +202,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(PoporImageBrowerCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
     //    NSLog(@"%@",indexPath);
     cell.browerVC = self;
-    PoporImageBrowerEntity * entity = self.imageArray[indexPath.row];
+    PoporImageBrowerEntity * entity = self.weakImageArray[indexPath.row];
     if (entity.isUseImage) {
         [cell adjustImageViewWithImage:entity.bigImage];
         //开启缩放
@@ -275,7 +291,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
     [containerView addSubview:toView];
     
     CGFloat duration = SWPhotoBrowerAnimationDuration;
-    PoporImageBrowerEntity * entity = self.imageArray[_index];
+    PoporImageBrowerEntity * entity = self.weakImageArray[_index];
     UIImage *image;
     if (entity.isUseImage) {
         image = entity.smallImage ? : entity.smallImage;
@@ -359,7 +375,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
     CGRect convertFrame = [imageView.superview convertRect:imageView.frame toCoordinateSpace:[UIScreen mainScreen].coordinateSpace];
     CGFloat duration = SWPhotoBrowerAnimationDuration;
     
-    PoporImageBrowerEntity * entity = self.imageArray[_index];
+    PoporImageBrowerEntity * entity = self.weakImageArray[_index];
     if (entity.isUseImage) {
         
     }else{
@@ -473,7 +489,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
         return NO;//禁止上滑
     }
     
-    PoporImageBrowerEntity * entity = self.imageArray[_index];
+    PoporImageBrowerEntity * entity = self.weakImageArray[_index];
     if (entity.isUseImage) {
         
     }else{

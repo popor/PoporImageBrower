@@ -36,28 +36,38 @@ typedef UIImage *    (^PoporImageBrowerPlaceholderImageBlock)(PoporImageBrower *
 @property (nonatomic, copy  ) PoporImageBrowerSingleTapBlock        singleTapBlock;
 
 //保存是哪个控制器弹出的图片浏览器,解决self.presentingViewController在未present之前取到的值为nil的情况
-@property (nonatomic,weak,readonly) UIViewController *presentVC;
+@property (nonatomic, weak,readonly) UIViewController *presentVC;
 /**
  显示状态
  */
-@property (nonatomic,readonly) PoporImageBrowerStatus photoBrowerControllerStatus;
+@property (nonatomic, readonly) PoporImageBrowerStatus photoBrowerControllerStatus;
 
 /**
  当前图片的索引
  */
-@property (nonatomic,readonly) NSInteger index;
+@property (nonatomic, readonly) NSInteger index;
 
-@property (nonatomic,readonly,copy) NSArray<PoporImageBrowerEntity *> * imageArray;
+@property (nonatomic, readonly,copy) NSArray<PoporImageBrowerEntity *> * copyImageArray;
+@property (nonatomic, weak) NSArray<PoporImageBrowerEntity *> * weakImageArray;
 /**
  小图的大小
  */
-@property (nonatomic,readonly) CGSize normalImageViewSize;
+@property (nonatomic, readonly) CGSize normalImageViewSize;
 
 @property (nonatomic) BOOL saveImageEnable; //是否禁止保存图片, 默认为YES
 @property (nonatomic) BOOL showDownloadImageError;//是否显示下载图片出错信息, 默认为YES
 
 - (instancetype)initWithIndex:(NSInteger)index
-                   imageArray:(NSArray<PoporImageBrowerEntity *> *)imageArray
+               copyImageArray:(NSArray<PoporImageBrowerEntity *> *)copyImageArray
+                    presentVC:(UIViewController *)presentVC
+             originImageBlock:(PoporImageBrowerOriginImageBlock _Nonnull)originImageBlock
+               disappearBlock:(PoporImageBrowerDisappearBlock _Nullable)disappearBlock
+        placeholderImageBlock:(PoporImageBrowerPlaceholderImageBlock _Nullable)placeholderImageBlock;
+
+// weakImageArray, 用于第二次开发
+- (instancetype)initWithIndex:(NSInteger)index
+               copyImageArray:(NSArray<PoporImageBrowerEntity *> *)copyImageArray
+               weakImageArray:(NSArray<PoporImageBrowerEntity *> *)weakImageArray
                     presentVC:(UIViewController *)presentVC
              originImageBlock:(PoporImageBrowerOriginImageBlock _Nonnull)originImageBlock
                disappearBlock:(PoporImageBrowerDisappearBlock _Nullable)disappearBlock

@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'PoporImageBrower'
-  s.version          = '0.0.8'
+  s.version          = '0.0.9'
   s.summary          = '摘自https://github.com/zhoushaowen/SWPhotoBrower, 除了原作者URL之外,增加了UIImage查看模式.'
 
   s.homepage         = 'https://github.com/popor/PoporImageBrower'
