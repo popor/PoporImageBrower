@@ -64,11 +64,13 @@
         UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTap:)];
         singleTap.numberOfTapsRequired = 1;
         [_scrollView addGestureRecognizer:singleTap];
+        
         //双击
         PoporShortTapGestureRecognizer *doubleTap = [[PoporShortTapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTap:)];
         doubleTap.numberOfTapsRequired = 2;
         [_scrollView addGestureRecognizer:doubleTap];
         [singleTap requireGestureRecognizerToFail:doubleTap];
+        
         //添加长按手势
         UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
         longPress.delegate = self;
@@ -194,15 +196,22 @@
 }
 
 - (void)singleTap:(UITapGestureRecognizer *)gesture {
-    if(gesture.state != UIGestureRecognizerStateEnded) return;
+    if (self.browerVC.singleTapBlock) {
+        self.browerVC.singleTapBlock(self.browerVC, self.browerVC.index);
+        return;
+    }
+    if(gesture.state != UIGestureRecognizerStateEnded){
+        return;
+    }
     dispatch_async(dispatch_get_main_queue(), ^{
-        [MBProgressHUD hideHUDForView:self.browerVC.view animated:NO];
-        [self.browerVC dismissViewControllerAnimated:YES completion:nil];
+        [self.browerVC close];
     });
 }
 
 - (void)longPress:(UILongPressGestureRecognizer *)gesture {
-    if(gesture.state != UIGestureRecognizerStateBegan) return;
+    if(gesture.state != UIGestureRecognizerStateBegan) {
+        return;
+    }
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     [alert addAction:[UIAlertAction actionWithTitle:@"保存图片" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         if(self.imagView.image) {

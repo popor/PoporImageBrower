@@ -25,6 +25,7 @@ extern NSTimeInterval const SWPhotoBrowerAnimationDuration;
 
 typedef UIImageView *(^PoporImageBrowerOriginImageBlock)(PoporImageBrower *browerController, NSInteger index);
 typedef void         (^PoporImageBrowerDisappearBlock)(PoporImageBrower *browerController, NSInteger index);
+typedef void         (^PoporImageBrowerSingleTapBlock)(PoporImageBrower *browerController, NSInteger index);
 typedef UIImage *    (^PoporImageBrowerPlaceholderImageBlock)(PoporImageBrower *browerController);
 
 @interface PoporImageBrower : UIViewController<UIViewControllerTransitioningDelegate,UIViewControllerAnimatedTransitioning>
@@ -32,9 +33,10 @@ typedef UIImage *    (^PoporImageBrowerPlaceholderImageBlock)(PoporImageBrower *
 @property (nonatomic, copy  ) PoporImageBrowerOriginImageBlock      originImageBlock;
 @property (nonatomic, copy  ) PoporImageBrowerDisappearBlock        disappearBlock;
 @property (nonatomic, copy  ) PoporImageBrowerPlaceholderImageBlock placeholderImageBlock;
+@property (nonatomic, copy  ) PoporImageBrowerSingleTapBlock        singleTapBlock;
 
 //保存是哪个控制器弹出的图片浏览器,解决self.presentingViewController在未present之前取到的值为nil的情况
-@property (nonatomic,weak,readonly) UIViewController *browerPresentingViewController;
+@property (nonatomic,weak,readonly) UIViewController *presentVC;
 /**
  显示状态
  */
@@ -56,7 +58,7 @@ typedef UIImage *    (^PoporImageBrowerPlaceholderImageBlock)(PoporImageBrower *
 
 - (instancetype)initWithIndex:(NSInteger)index
                    imageArray:(NSArray<PoporImageBrowerEntity *> *)imageArray
-                 presentingVC:(UIViewController *)presentingVC
+                    presentVC:(UIViewController *)presentVC
              originImageBlock:(PoporImageBrowerOriginImageBlock _Nonnull)originImageBlock
                disappearBlock:(PoporImageBrowerDisappearBlock _Nullable)disappearBlock
         placeholderImageBlock:(PoporImageBrowerPlaceholderImageBlock _Nullable)placeholderImageBlock;
@@ -65,6 +67,8 @@ typedef UIImage *    (^PoporImageBrowerPlaceholderImageBlock)(PoporImageBrower *
  显示图片浏览器
  */
 - (void)show;
+
+- (void)close;
 
 // 不推荐使用的接口
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil NS_UNAVAILABLE;

@@ -217,14 +217,14 @@
 		6003F593195388D20070C39A /* Example for PoporImageBrower */ = {
 			isa = PBXGroup;
 			children = (
+				189103C8217049B6004D48C9 /* other */,
 				18EB1F6D21747422007F913D /* placeholder@2x.png */,
 				189103D42170512A004D48C9 /* bmiddle */,
 				189103CC2170512A004D48C9 /* thumbnail */,
-				189103C921704B6C004D48C9 /* MyCollectionViewCell.h */,
-				189103CA21704B6C004D48C9 /* MyCollectionViewCell.m */,
-				189103C8217049B6004D48C9 /* other */,
 				6003F5A5195388D20070C39A /* PoporImageBrowerViewController.h */,
 				6003F5A6195388D20070C39A /* PoporImageBrowerViewController.m */,
+				189103C921704B6C004D48C9 /* MyCollectionViewCell.h */,
+				189103CA21704B6C004D48C9 /* MyCollectionViewCell.m */,
 			);
 			name = "Example for PoporImageBrower";
 			path = PoporImageBrower;

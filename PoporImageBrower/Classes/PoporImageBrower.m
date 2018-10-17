@@ -11,6 +11,7 @@
 #import <SDWebImage/SDImageCache.h>
 #import <SDWebImage/SDWebImageManager.h>
 #import <SDWebImage/UIView+WebCache.h>
+#import <MBProgressHUD/MBProgressHUD.h>
 #import "PoporImageBrowerBundle.h"
 
 NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
@@ -55,20 +56,19 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 
 - (instancetype)initWithIndex:(NSInteger)index
                    imageArray:(NSArray<PoporImageBrowerEntity *> *)imageArray
-                 presentingVC:(UIViewController *)presentingVC
+                    presentVC:(UIViewController *)presentVC
              originImageBlock:(PoporImageBrowerOriginImageBlock _Nonnull)originImageBlock
                disappearBlock:(PoporImageBrowerDisappearBlock _Nullable)disappearBlock
-       placeholderImageBlock:(PoporImageBrowerPlaceholderImageBlock _Nullable)placeholderImageBlock
+        placeholderImageBlock:(PoporImageBrowerPlaceholderImageBlock _Nullable)placeholderImageBlock
 {
     
     if(self = [super initWithNibName:nil bundle:nil]) {
-        NSAssert(presentingVC != nil, @"browerPresentingViewController不能为nil");
-        _browerPresentingViewController = presentingVC;
+        NSAssert(presentVC != nil, @"presentVC 不能为nil");
+        _presentVC = presentVC;
         //保存原来的屏幕旋转状态
-        self.originalOrientation = [[presentingVC valueForKey:@"interfaceOrientation"] integerValue];
+        self.originalOrientation = [[presentVC valueForKey:@"interfaceOrientation"] integerValue];
         _index                   = index;
         _imageArray              = imageArray;
-        
         // checkImageEntity
         for (PoporImageBrowerEntity * entity in _imageArray) {
             if (entity.isUseImage) {
@@ -117,12 +117,13 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
     [self setupUI];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    [self.browerPresentingViewController setNeedsStatusBarAppearanceUpdate];
+    [self.presentVC setNeedsStatusBarAppearanceUpdate];
 }
 
 - (void)setupUI {
@@ -232,8 +233,10 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-    if([self isIPhoneXSeries]) return UIStatusBarStyleLightContent;
-    return self.browerPresentingViewController.preferredStatusBarStyle;
+    if([self isIPhoneXSeries]) {
+        return UIStatusBarStyleLightContent;
+    }
+    return self.presentVC.preferredStatusBarStyle;
 }
 
 - (BOOL)isIPhoneXSeries {
@@ -261,7 +264,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
     return _tempImageView;
 }
 
-#pragma mark 打开动画
+#pragma mark - present动画
 - (void)doPresentAnimation:(id<UIViewControllerContextTransitioning>)transitionContext {
     self.photoBrowerControllerStatus = PoporImageBrowerWillShow;
     UIView *containerView = [transitionContext containerView];
@@ -325,7 +328,6 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
     }];
 }
 
-#pragma mark 关闭动画
 - (void)doDismissAnimation:(id<UIViewControllerContextTransitioning>)transitionContext {
     self.photoBrowerControllerStatus = PoporImageBrowerWillHide;
     //一定要在获取到imageView的frame之前改变状态栏，否则动画会出现跳一下的现象
@@ -404,6 +406,9 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
     return CGRectMake(0, inset, screenWidth, imageHeight);
 }
 
+#pragma mark - pop动画
+
+
 #pragma mark - UIViewControllerTransitioningDelegate
 - (UIPresentationController *)presentationControllerForPresentedViewController:(UIViewController *)presented presentingViewController:(UIViewController *)presenting sourceViewController:(UIViewController *)source {
     UIPresentationController *controller = [[UIPresentationController alloc] initWithPresentedViewController:presented presentingViewController:presenting];
@@ -437,13 +442,23 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
     return YES;
 }
 
+#pragma mark - 打开关闭
 - (void)show {
-    if(self.photoBrowerControllerStatus != PoporImageBrowerUnShow) return;
+    if(self.photoBrowerControllerStatus != PoporImageBrowerUnShow) {
+        return;
+    }
     dispatch_async(dispatch_get_main_queue(), ^{
-        self.transitioningDelegate = self;
-        self.modalPresentationStyle = UIModalPresentationCustom;
-        [self.browerPresentingViewController presentViewController:self animated:YES completion:nil];
+        {
+            self.transitioningDelegate = self;
+            self.modalPresentationStyle = UIModalPresentationCustom;
+            [self.presentVC presentViewController:self animated:YES completion:nil];
+        }
     });
+}
+
+- (void)close {
+    [MBProgressHUD hideHUDForView:self.view animated:NO];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - UIGestureRecognizerDelegate 关闭手势

@@ -28,6 +28,8 @@ static NSString *const Cell = @"cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"PoporImageBrower";
+    
     self.useImage = NO;
     
     self.dataArray = @[
@@ -71,6 +73,7 @@ static NSString *const Cell = @"cell";
     self.collectionView.backgroundColor = [UIColor whiteColor];
     [self.collectionView registerClass:[MyCollectionViewCell class] forCellWithReuseIdentifier:Cell];
     [self.view addSubview:self.collectionView];
+    
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
@@ -115,11 +118,13 @@ static NSString *const Cell = @"cell";
     }
     
     __weak typeof(self) weakSelf = self;
-    PoporImageBrower *photoBrower = [[PoporImageBrower alloc] initWithIndex:indexPath.item imageArray:imageArray presentingVC:self originImageBlock:^UIImageView *(PoporImageBrower *browerController, NSInteger index) {
+    PoporImageBrower *photoBrower = [[PoporImageBrower alloc] initWithIndex:indexPath.item imageArray:imageArray presentVC:self originImageBlock:^UIImageView *(PoporImageBrower *browerController, NSInteger index) {
+        
         MyCollectionViewCell *cell = (MyCollectionViewCell *)[weakSelf.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]];
         return cell.imgV;
         
     } disappearBlock:^(PoporImageBrower *browerController, NSInteger index) {
+        
         [weakSelf.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
         //collectionView必须要layoutIfNeeded，否则cellForItemAtIndexPath,有可能获取到的是nil，
         [weakSelf.collectionView layoutIfNeeded];
