@@ -89,8 +89,8 @@
     return _progressView;
 }
 
-- (void)setNormalImageUrl:(NSURL *)normalImageUrl {
-    _normalImageUrl = normalImageUrl;
+- (void)setSmallImageUrl:(NSURL *)normalImageUrl {
+    _smallImageUrl = normalImageUrl;
     self.scrollView.zoomScale = 1.0f;
     UIImage *image = [[SDImageCache sharedImageCache] imageFromCacheForKey:normalImageUrl.absoluteString];
     CGSize size = _browerVC.normalImageViewSize;
@@ -263,9 +263,9 @@
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
     if(gestureRecognizer == _longPress){
         if (self.browerVC.saveImageEnable) {
-            if (self.bigImageUrl || self.normalImageUrl) {
+            if (self.bigImageUrl || self.smallImageUrl) {
                 if (![[SDImageCache sharedImageCache] imageFromCacheForKey:self.bigImageUrl.absoluteString] &&
-                    ![[SDImageCache sharedImageCache] imageFromCacheForKey:self.normalImageUrl.absoluteString]) {
+                    ![[SDImageCache sharedImageCache] imageFromCacheForKey:self.smallImageUrl.absoluteString]) {
                     
                     return NO;
                 }

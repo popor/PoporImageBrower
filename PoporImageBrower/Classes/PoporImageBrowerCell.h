@@ -16,7 +16,7 @@
 @property (nonatomic, strong) UIScrollView     *scrollView;
 @property (nonatomic, strong) UIImageView      *imagView;
 @property (nonatomic, strong) NSURL            *bigImageUrl;
-@property (nonatomic, strong) NSURL            *normalImageUrl;
+@property (nonatomic, strong) NSURL            *smallImageUrl;
 @property (nonatomic, weak  ) PoporImageBrower *browerVC;
 
 - (void)adjustImageViewWithImage:(UIImage *)image;
