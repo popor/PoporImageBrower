@@ -47,7 +47,7 @@ typedef UIImage *    (^PoporImageBrowerPlaceholderImageBlock)(PoporImageBrower *
  */
 @property (nonatomic, readonly) NSInteger index;
 
-@property (nonatomic, readonly,copy) NSArray<PoporImageBrowerEntity *> * copyImageArray;
+@property (nonatomic, readonly,copy) NSArray<PoporImageBrowerEntity *> * myImageArray;
 @property (nonatomic, weak) NSArray<PoporImageBrowerEntity *> * weakImageArray;
 /**
  小图的大小
@@ -58,7 +58,7 @@ typedef UIImage *    (^PoporImageBrowerPlaceholderImageBlock)(PoporImageBrower *
 @property (nonatomic) BOOL showDownloadImageError;//是否显示下载图片出错信息, 默认为YES
 
 - (instancetype)initWithIndex:(NSInteger)index
-               copyImageArray:(NSArray<PoporImageBrowerEntity *> *)copyImageArray
+               copyImageArray:(NSArray<PoporImageBrowerEntity *> *)myImageArray
                     presentVC:(UIViewController *)presentVC
              originImageBlock:(PoporImageBrowerOriginImageBlock _Nonnull)originImageBlock
                disappearBlock:(PoporImageBrowerDisappearBlock _Nullable)disappearBlock
@@ -66,7 +66,7 @@ typedef UIImage *    (^PoporImageBrowerPlaceholderImageBlock)(PoporImageBrower *
 
 // weakImageArray, 用于第二次开发
 - (instancetype)initWithIndex:(NSInteger)index
-               copyImageArray:(NSArray<PoporImageBrowerEntity *> *)copyImageArray
+               copyImageArray:(NSArray<PoporImageBrowerEntity *> *)myImageArray
                weakImageArray:(NSArray<PoporImageBrowerEntity *> *)weakImageArray
                     presentVC:(UIViewController *)presentVC
              originImageBlock:(PoporImageBrowerOriginImageBlock _Nonnull)originImageBlock

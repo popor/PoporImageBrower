@@ -55,18 +55,18 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 @implementation PoporImageBrower
 
 - (instancetype)initWithIndex:(NSInteger)index
-               copyImageArray:(NSArray<PoporImageBrowerEntity *> *)copyImageArray
+               copyImageArray:(NSArray<PoporImageBrowerEntity *> *)myImageArray
                     presentVC:(UIViewController *)presentVC
              originImageBlock:(PoporImageBrowerOriginImageBlock _Nonnull)originImageBlock
                disappearBlock:(PoporImageBrowerDisappearBlock _Nullable)disappearBlock
         placeholderImageBlock:(PoporImageBrowerPlaceholderImageBlock _Nullable)placeholderImageBlock
 {
-    return [self initWithIndex:index copyImageArray:copyImageArray weakImageArray:nil presentVC:presentVC originImageBlock:originImageBlock disappearBlock:disappearBlock placeholderImageBlock:placeholderImageBlock];
+    return [self initWithIndex:index copyImageArray:myImageArray weakImageArray:nil presentVC:presentVC originImageBlock:originImageBlock disappearBlock:disappearBlock placeholderImageBlock:placeholderImageBlock];
 }
 
 // weakImageArray, 用于第二次开发
 - (instancetype)initWithIndex:(NSInteger)index
-               copyImageArray:(NSArray<PoporImageBrowerEntity *> *)copyImageArray
+               copyImageArray:(NSArray<PoporImageBrowerEntity *> *)myImageArray
                weakImageArray:(NSArray<PoporImageBrowerEntity *> *)weakImageArray
                     presentVC:(UIViewController *)presentVC
              originImageBlock:(PoporImageBrowerOriginImageBlock _Nonnull)originImageBlock
@@ -80,11 +80,11 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
         //保存原来的屏幕旋转状态
         self.originalOrientation = [[presentVC valueForKey:@"interfaceOrientation"] integerValue];
         _index                   = index;
-        _copyImageArray          = copyImageArray;
+        _myImageArray            = myImageArray;
         if (weakImageArray) {
             _weakImageArray      = weakImageArray;
         }else{
-            _weakImageArray      = _copyImageArray;
+            _weakImageArray      = _myImageArray;
         }
         
         _originImageBlock        = originImageBlock;

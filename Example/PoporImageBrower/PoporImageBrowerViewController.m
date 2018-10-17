@@ -118,7 +118,7 @@ static NSString *const Cell = @"cell";
     }
     
     __weak typeof(self) weakSelf = self;
-    PoporImageBrower *photoBrower = [[PoporImageBrower alloc] initWithIndex:indexPath.item imageArray:imageArray presentVC:self originImageBlock:^UIImageView *(PoporImageBrower *browerController, NSInteger index) {
+    PoporImageBrower *photoBrower = [[PoporImageBrower alloc] initWithIndex:indexPath.item copyImageArray:imageArray presentVC:self originImageBlock:^UIImageView *(PoporImageBrower *browerController, NSInteger index) {
         
         MyCollectionViewCell *cell = (MyCollectionViewCell *)[weakSelf.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]];
         return cell.imgV;
