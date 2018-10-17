@@ -68,7 +68,17 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
         self.originalOrientation = [[presentingVC valueForKey:@"interfaceOrientation"] integerValue];
         _index                   = index;
         _imageArray              = imageArray;
-
+        
+        // checkImageEntity
+        for (PoporImageBrowerEntity * entity in _imageArray) {
+            if (entity.isUseImage) {
+                entity.normalImage    = entity.normalImage?:entity.bigImage;
+                entity.bigImage       = entity.bigImage?:entity.normalImage;
+            }else{
+                entity.normalImageUrl = entity.normalImageUrl?:entity.bigImageUrl;
+                entity.bigImageUrl    = entity.bigImageUrl?:entity.normalImageUrl;
+            }
+        }
         _originImageBlock        = originImageBlock;
         _disappearBlock          = disappearBlock;
         _placeholderImageBlock   = placeholderImageBlock;
