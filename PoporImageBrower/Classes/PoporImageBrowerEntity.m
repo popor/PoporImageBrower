@@ -10,6 +10,6 @@
 @implementation PoporImageBrowerEntity
 
 - (BOOL)isUseImage {
-    return self.normalImage||self.bigImage;
+    return self.smallImage||self.bigImage;
 }
 @end

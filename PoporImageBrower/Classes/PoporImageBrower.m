@@ -72,11 +72,11 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
         // checkImageEntity
         for (PoporImageBrowerEntity * entity in _imageArray) {
             if (entity.isUseImage) {
-                entity.normalImage    = entity.normalImage?:entity.bigImage;
-                entity.bigImage       = entity.bigImage?:entity.normalImage;
+                entity.smallImage    = entity.smallImage?:entity.bigImage;
+                entity.bigImage       = entity.bigImage?:entity.smallImage;
             }else{
-                entity.normalImageUrl = entity.normalImageUrl?:entity.bigImageUrl;
-                entity.bigImageUrl    = entity.bigImageUrl?:entity.normalImageUrl;
+                entity.smallImageUrl = entity.smallImageUrl?:entity.bigImageUrl;
+                entity.bigImageUrl    = entity.bigImageUrl?:entity.smallImageUrl;
             }
         }
         _originImageBlock        = originImageBlock;
@@ -193,7 +193,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
         cell.scrollView.maximumZoomScale = 2.0f;
     }else{
         //先设置小图
-        cell.normalImageUrl = entity.normalImageUrl;
+        cell.normalImageUrl = entity.smallImageUrl;
         //后设置大图
         cell.bigImageUrl    = entity.bigImageUrl;
     }
@@ -278,13 +278,13 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
     PoporImageBrowerEntity * entity = self.imageArray[_index];
     UIImage *image;
     if (entity.isUseImage) {
-        image = entity.normalImage ? : entity.normalImage;
+        image = entity.smallImage ? : entity.smallImage;
     }else{
         //先从缓存中获取大图
         image = [[SDImageCache sharedImageCache] imageFromCacheForKey:entity.bigImageUrl.absoluteString];
         
         if(image == nil){
-            image = [[SDImageCache sharedImageCache] imageFromCacheForKey:entity.normalImageUrl.absoluteString];
+            image = [[SDImageCache sharedImageCache] imageFromCacheForKey:entity.smallImageUrl.absoluteString];
             if(image == nil){//小图大图都没有找到
                 if (self.placeholderImageBlock) {
                     image = self.placeholderImageBlock(self);
@@ -364,7 +364,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
         
     }else{
         if(![[SDImageCache sharedImageCache] imageFromCacheForKey:entity.bigImageUrl.absoluteString] &&
-           ![[SDImageCache sharedImageCache] imageFromCacheForKey:entity.normalImageUrl.absoluteString]){
+           ![[SDImageCache sharedImageCache] imageFromCacheForKey:entity.smallImageUrl.absoluteString]){
             duration = 0;
         }
     }
@@ -478,7 +478,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
         
     }else{
         if(![[SDImageCache sharedImageCache] imageFromCacheForKey:entity.bigImageUrl.absoluteString] &&
-           ![[SDImageCache sharedImageCache] imageFromCacheForKey:entity.normalImageUrl.absoluteString]){
+           ![[SDImageCache sharedImageCache] imageFromCacheForKey:entity.smallImageUrl.absoluteString]){
             return NO;
         }
     }

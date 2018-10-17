@@ -11,11 +11,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface PoporImageBrowerEntity : NSObject
 
-@property (nonatomic, strong) UIImage * normalImage;
-@property (nonatomic, strong) UIImage * bigImage; // 假如只有一个图片,那么必须要设置大图
+@property (nonatomic, strong) UIImage * smallImage;
+@property (nonatomic, strong) UIImage * bigImage;
 
-@property (nonatomic, strong) NSURL * normalImageUrl;
-@property (nonatomic, strong) NSURL * bigImageUrl; // 假如只有一个图片,那么必须要设置大图
+@property (nonatomic, strong) NSURL * smallImageUrl;
+@property (nonatomic, strong) NSURL * bigImageUrl;
 
 - (BOOL)isUseImage;
 

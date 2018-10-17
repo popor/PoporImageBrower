@@ -100,7 +100,7 @@ static NSString *const Cell = @"cell";
     if (self.isUseImage) {
         for (int i = 0;i<self.smallImageArray.count; i++) {
             PoporImageBrowerEntity * entity = [PoporImageBrowerEntity new];
-            entity.normalImage = self.smallImageArray[i];
+            entity.smallImage = self.smallImageArray[i];
             entity.bigImage    = self.bigImageArray[i];
             
             [imageArray addObject:entity];
@@ -110,7 +110,7 @@ static NSString *const Cell = @"cell";
             NSString *str = [obj stringByReplacingOccurrencesOfString:@"thumbnail" withString:@"bmiddle"];
             
             PoporImageBrowerEntity * entity = [PoporImageBrowerEntity new];
-            entity.normalImageUrl = [NSURL URLWithString:obj];
+            entity.smallImageUrl = [NSURL URLWithString:obj];
             entity.bigImageUrl    = [NSURL URLWithString:str];
             
             [imageArray addObject:entity];
