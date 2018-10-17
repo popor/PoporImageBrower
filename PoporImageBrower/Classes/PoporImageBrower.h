@@ -54,9 +54,6 @@ typedef UIImage *    (^PoporImageBrowerPlaceholderImageBlock)(PoporImageBrower *
  */
 @property (nonatomic, readonly) CGSize normalImageViewSize;
 
-@property (nonatomic) BOOL saveImageEnable; //是否禁止保存图片, 默认为YES
-@property (nonatomic) BOOL showDownloadImageError;//是否显示下载图片出错信息, 默认为YES
-
 - (instancetype)initWithIndex:(NSInteger)index
                copyImageArray:(NSArray<PoporImageBrowerEntity *> *)myImageArray
                     presentVC:(UIViewController *)presentVC
@@ -72,6 +69,10 @@ typedef UIImage *    (^PoporImageBrowerPlaceholderImageBlock)(PoporImageBrower *
              originImageBlock:(PoporImageBrowerOriginImageBlock _Nonnull)originImageBlock
                disappearBlock:(PoporImageBrowerDisappearBlock _Nullable)disappearBlock
         placeholderImageBlock:(PoporImageBrowerPlaceholderImageBlock _Nullable)placeholderImageBlock;
+
+// 没有放置到初始化函数中的参数.
+@property (nonatomic) BOOL saveImageEnable; //是否禁止保存图片, 默认为YES
+@property (nonatomic) BOOL showDownloadImageError;//是否显示下载图片出错信息, 默认为YES
 
 /**
  显示图片浏览器

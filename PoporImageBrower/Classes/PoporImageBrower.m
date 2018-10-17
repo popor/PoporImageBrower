@@ -209,7 +209,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
         cell.scrollView.maximumZoomScale = 2.0f;
     }else{
         //先设置小图
-        cell.normalImageUrl = entity.smallImageUrl;
+        cell.smallImageUrl = entity.smallImageUrl;
         //后设置大图
         cell.bigImageUrl    = entity.bigImageUrl;
     }
@@ -294,7 +294,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
     PoporImageBrowerEntity * entity = self.weakImageArray[_index];
     UIImage *image;
     if (entity.isUseImage) {
-        image = entity.smallImage ? : entity.smallImage;
+        image = entity.bigImage ? : entity.smallImage;
     }else{
         //先从缓存中获取大图
         image = [[SDImageCache sharedImageCache] imageFromCacheForKey:entity.bigImageUrl.absoluteString];
