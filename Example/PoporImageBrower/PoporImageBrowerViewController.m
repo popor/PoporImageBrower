@@ -17,7 +17,7 @@ static NSString *const Cell = @"cell";
 
 @property (nonatomic, getter=isUseImage) BOOL useImage;
 @property (nonatomic, strong) UICollectionView * collectionView;
-@property (nonatomic, strong) NSArray * dataArray;
+@property (nonatomic, strong) NSMutableArray * dataArray;
 
 @property (nonatomic, strong) NSArray * smallImageArray;
 @property (nonatomic, strong) NSArray * bigImageArray;
@@ -32,7 +32,7 @@ static NSString *const Cell = @"cell";
     
     self.useImage = NO;
     
-    self.dataArray = @[
+    NSArray * dataArray0 = @[
                        @"http://ww2.sinaimg.cn/thumbnail/9ecab84ejw1emgd5nd6eaj20c80c8q4a.jpg",
                        @"http://ww2.sinaimg.cn/thumbnail/642beb18gw1ep3629gfm0g206o050b2a.gif",
                        @"http://ww4.sinaimg.cn/thumbnail/9e9cb0c9jw1ep7nlyu8waj20c80kptae.jpg",
@@ -42,8 +42,12 @@ static NSString *const Cell = @"cell";
                        @"http://ww3.sinaimg.cn/thumbnail/8e88b0c1gw1e9lpr57tn9j20gy0obn0f.jpg",
                        @"http://ww2.sinaimg.cn/thumbnail/677febf5gw1erma104rhyj20k03dz16y.jpg",
                        @"http://ww4.sinaimg.cn/thumbnail/677febf5gw1erma1g5xd0j20k0esa7wj.jpg",
-                       @"http://ww4.sinaimg.cn/thumbnail/error.jpg",
+                       //@"http://ww4.sinaimg.cn/thumbnail/error.jpg",
                        ];
+    self.dataArray = [NSMutableArray new];
+    for (int i = 0; i<10; i++) {
+        [self.dataArray addObjectsFromArray:dataArray0];
+    }
     
     self.smallImageArray = @[
                              [UIImage imageNamed:@"9ecab84ejw1emgd5nd6eaj20c80c8q4a_s.jpg"],
@@ -120,7 +124,9 @@ static NSString *const Cell = @"cell";
     __weak typeof(self) weakSelf = self;
     PoporImageBrower *photoBrower = [[PoporImageBrower alloc] initWithIndex:indexPath.item copyImageArray:imageArray presentVC:self originImageBlock:^UIImageView *(PoporImageBrower *browerController, NSInteger index) {
         
-        MyCollectionViewCell *cell = (MyCollectionViewCell *)[weakSelf.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]];
+        NSIndexPath * ip = [NSIndexPath indexPathForItem:index inSection:0];
+        MyCollectionViewCell *cell = (MyCollectionViewCell *)[weakSelf.collectionView cellForItemAtIndexPath:ip];
+        
         return cell.imgV;
         
     } disappearBlock:^(PoporImageBrower *browerController, NSInteger index) {
