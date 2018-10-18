@@ -227,24 +227,23 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
     if (self.scrollBlock) {
         self.scrollBlock(self, self.index);
     }
-    // POPOR 感觉这里不需要执行.
-    //    return;
-    //    // MARK: 滑动,索取父视图图片
-    //    UIImageView *imageView = self.originImageBlock(self, index);
-    //    if (imageView) {
-    //        [self.originalImageViews enumerateKeysAndObjectsUsingBlock:^(NSString*  _Nonnull key, UIImageView*  _Nonnull imgV, BOOL * _Nonnull stop) {
-    //            imgV.image = [self.originalImages objectForKey:key];
-    //        }];
-    //        [self.originalImageViews removeAllObjects];
-    //        [self.originalImages removeAllObjects];
-    //        NSString *key = [NSString stringWithFormat:@"%ld",(long)index];
-    //        if(imageView.image){
-    //            [self.originalImages setObject:imageView.image forKey:key];
-    //        }
-    //        imageView.image = nil;
-    //        [self.originalImageViews setObject:imageView forKey:key];
-    //        _normalImageViewSize = imageView.frame.size;
-    //    }
+    // MARK: 滑动,索取父视图图片
+    // 有时候取值会失败,这里有一次挽留的机会.注意问题1的前提
+    UIImageView *imageView = self.originImageBlock(self, index);
+    if (imageView) {
+        [self.originalImageViews enumerateKeysAndObjectsUsingBlock:^(NSString*  _Nonnull key, UIImageView*  _Nonnull imgV, BOOL * _Nonnull stop) {
+            imgV.image = [self.originalImages objectForKey:key];
+        }];
+        [self.originalImageViews removeAllObjects];
+        [self.originalImages removeAllObjects];
+        NSString *key = [NSString stringWithFormat:@"%ld",(long)index];
+        if(imageView.image){
+            [self.originalImages setObject:imageView.image forKey:key];
+        }
+        imageView.image = nil;
+        [self.originalImageViews setObject:imageView forKey:key];
+        _normalImageViewSize = imageView.frame.size;
+    }
 }
 
 //隐藏状态栏
@@ -376,6 +375,10 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
     [fromView addSubview:self.tempImageView];
     
     UIImageView *imageView = self.originImageBlock(self, self.index);
+    if (!imageView) {
+        // 有时候取值会失败,这里有一次挽留的机会.注意答案1
+        imageView = [self.originalImageViews objectForKey:[NSString stringWithFormat:@"%li", self.index]];
+    }
     _normalImageViewSize = imageView.frame.size;
     CGRect convertFrame  = [imageView.superview convertRect:imageView.frame toCoordinateSpace:[UIScreen mainScreen].coordinateSpace];
     CGFloat duration     = SWPhotoBrowerAnimationDuration;
