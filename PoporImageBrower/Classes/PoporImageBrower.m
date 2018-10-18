@@ -377,7 +377,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
     UIImageView *imageView = self.originImageBlock(self, self.index);
     if (!imageView) {
         // 有时候取值会失败,这里有一次挽留的机会.注意答案1
-        imageView = [self.originalImageViews objectForKey:[NSString stringWithFormat:@"%li", self.index]];
+        imageView = [self.originalImageViews objectForKey:[NSString stringWithFormat:@"%ld", self.index]];
     }
     _normalImageViewSize = imageView.frame.size;
     CGRect convertFrame  = [imageView.superview convertRect:imageView.frame toCoordinateSpace:[UIScreen mainScreen].coordinateSpace];
