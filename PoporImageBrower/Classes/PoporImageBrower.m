@@ -57,9 +57,9 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 - (instancetype)initWithIndex:(NSInteger)index
                copyImageArray:(NSArray<PoporImageBrowerEntity *> *)myImageArray
                     presentVC:(UIViewController *)presentVC
-             originImageBlock:(PoporImageBrowerOriginImageBlock _Nonnull)originImageBlock
-               disappearBlock:(PoporImageBrowerDisappearBlock _Nullable)disappearBlock
-        placeholderImageBlock:(PoporImageBrowerPlaceholderImageBlock _Nullable)placeholderImageBlock
+             originImageBlock:(PoporImageBrowerIVBlock _Nonnull)originImageBlock
+               disappearBlock:(PoporImageBrowerVoidBlock _Nullable)disappearBlock
+        placeholderImageBlock:(PoporImageBrowerImageBlock _Nullable)placeholderImageBlock
 {
     return [self initWithIndex:index copyImageArray:myImageArray weakImageArray:nil presentVC:presentVC originImageBlock:originImageBlock disappearBlock:disappearBlock placeholderImageBlock:placeholderImageBlock];
 }
@@ -69,9 +69,9 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
                copyImageArray:(NSArray<PoporImageBrowerEntity *> *)myImageArray
                weakImageArray:(NSArray<PoporImageBrowerEntity *> *)weakImageArray
                     presentVC:(UIViewController *)presentVC
-             originImageBlock:(PoporImageBrowerOriginImageBlock _Nonnull)originImageBlock
-               disappearBlock:(PoporImageBrowerDisappearBlock _Nullable)disappearBlock
-        placeholderImageBlock:(PoporImageBrowerPlaceholderImageBlock _Nullable)placeholderImageBlock
+             originImageBlock:(PoporImageBrowerIVBlock _Nonnull)originImageBlock
+               disappearBlock:(PoporImageBrowerVoidBlock _Nullable)disappearBlock
+        placeholderImageBlock:(PoporImageBrowerImageBlock _Nullable)placeholderImageBlock
 {
     
     if(self = [super initWithNibName:nil bundle:nil]) {
@@ -224,7 +224,9 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
     NSInteger index = ABS(targetContentOffset->x/(self.view.frame.size.width + 16));
     self.index = index;
-    
+    if (self.scrollBlock) {
+        self.scrollBlock(self, self.index);
+    }
     // POPOR 感觉这里不需要执行.
     //    return;
     //    // MARK: 滑动,索取父视图图片
