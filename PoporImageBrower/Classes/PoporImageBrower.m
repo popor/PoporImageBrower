@@ -361,10 +361,6 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
     NSIndexPath *visibleIndexPath = self.collectionView.indexPathsForVisibleItems.lastObject;
     _index = visibleIndexPath.item;
     
-    // MARK: 销毁
-    if (self.disappearBlock) {
-        self.disappearBlock(self, _index);
-    }
     PoporImageBrowerCell *cell = (PoporImageBrowerCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:_index inSection:0]];
     self.tempImageView.image = cell.imagView.image;
     CGRect fromRect = [cell.imagView.superview convertRect:cell.imagView.frame toCoordinateSpace:[UIScreen mainScreen].coordinateSpace];
@@ -405,6 +401,11 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
         //旋转屏幕至原来的状态
         [[UIDevice currentDevice] setValue:@(self.originalOrientation) forKey:@"orientation"];
     } completion:^(BOOL finished) {
+        // MARK: 销毁
+        if (self.disappearBlock) {
+            self.disappearBlock(self, self.index);
+        }
+        
         [fromView removeFromSuperview];
         [transitionContext completeTransition:!transitionContext.transitionWasCancelled];
         self.photoBrowerControllerStatus = PoporImageBrowerDidHide;
