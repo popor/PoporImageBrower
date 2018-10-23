@@ -23,7 +23,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 @implementation MyCollectionView
 
 - (void)dealloc {
-    NSLog(@"%s",__func__);
+    //    NSLog(@"%s",__func__);
 }
 
 @end
@@ -593,7 +593,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 }
 
 - (void)dealloc {
-    NSLog(@"%s",__func__);
+    //    NSLog(@"%s",__func__);
     [[SDWebImageManager sharedManager] cancelAll];
     [[NSNotificationCenter defaultCenter] removeObserver:self.observer];
 }
