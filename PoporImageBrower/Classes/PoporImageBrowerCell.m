@@ -250,7 +250,7 @@
     hud.contentColor = [UIColor whiteColor];
     
     
-    hud.customView = [[UIImageView alloc] initWithImage:[PoporImageBrowerBundle imageName:imageName]];
+    hud.customView = [[UIImageView alloc] initWithImage:[PoporImageBrowerBundle imageBundleNamed:imageName]];
     hud.userInteractionEnabled    = NO;
     hud.bezelView.style           = MBProgressHUDBackgroundStyleSolidColor;
     hud.backgroundView.style      = MBProgressHUDBackgroundStyleSolidColor;

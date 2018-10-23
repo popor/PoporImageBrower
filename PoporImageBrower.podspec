@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'PoporImageBrower'
-  s.version          = '0.0.17'
+  s.version          = '0.0.19'
   s.summary          = '摘自https://github.com/zhoushaowen/SWPhotoBrower, 除了原作者URL之外,增加了UIImage查看模式.'
 
   s.homepage         = 'https://github.com/popor/PoporImageBrower'
@@ -22,7 +22,7 @@ Pod::Spec.new do |s|
 
   s.source_files = 'PoporImageBrower/Classes/*.{h,m}'
   
-  s.resource     = 'PoporImageBrower/Classes/icon.bundle'
+  s.resource     = 'PoporImageBrower/Classes/PoporImageBrower.bundle'
   
   s.dependency 'SDWebImage'
   s.dependency 'MBProgressHUD'

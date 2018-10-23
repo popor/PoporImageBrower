@@ -7,10 +7,8 @@
 
 #import <Foundation/Foundation.h>
 
-#define PoporImageBrowerBundleImage(name) [PoporImageBrowerBundle imageName:name]
-
 @interface PoporImageBrowerBundle : NSObject
 
-+ (UIImage *)imageName:(NSString *)name;
++ (UIImage *)imageBundleNamed:(NSString *)imageName;
 
 @end

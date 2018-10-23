@@ -18,7 +18,6 @@
 		1AC79415186E29479ABA350EEF9B4A75 /* SDWebImageCoder.m in Sources */ = {isa = PBXBuildFile; fileRef = FD9021227BC2B3A434315DEF4D1BF8B7 /* SDWebImageCoder.m */; };
 		1C59A5BEDBC5DCE9E3CD96BA99DD62C3 /* SDWebImage-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F0971E905E36D8FDB51D3E50A0208B6 /* SDWebImage-dummy.m */; };
 		210FE5B33D4E2550CC303E19F3A6D914 /* SDImageCacheConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 5C0A5B1C5886FB8DCC962581C2C2C1BA /* SDImageCacheConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		254F614DA072BE8678645DDF3BC3BF0E /* icon.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 88784DD13D476A816DD41656BB02F47D /* icon.bundle */; };
 		264AD8D447E6A06CCDA10DDD93E5990E /* PoporImageBrower-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0DAE5CF7D11FABEE440F11E67B2E6B /* PoporImageBrower-dummy.m */; };
 		29AD9E4856B14B2FB04EA81456D9AF10 /* PoporImageBrower.h in Headers */ = {isa = PBXBuildFile; fileRef = 439AF19B3514FC83DD7D9DFE84E94A05 /* PoporImageBrower.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2B32A5A74BED3F2A1738DA87499DD58E /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6081502609F5C5504D18898E621BEF12 /* ImageIO.framework */; };
@@ -95,6 +94,7 @@
 		F251F5537057E298EBA2766319BC1863 /* SDWebImageGIFCoder.h in Headers */ = {isa = PBXBuildFile; fileRef = FA35F472CBB18882D95026534AD37D81 /* SDWebImageGIFCoder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F4BC40BDCECC859EF79FF891D63214C7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F2DD773F970F9DB2A89ECE930FF0B97 /* Foundation.framework */; };
 		FB2782213B53D91D595400D8507F7DF4 /* UIImage+MultiFormat.h in Headers */ = {isa = PBXBuildFile; fileRef = EF6639035E84E64D2BAD40989C529975 /* UIImage+MultiFormat.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC6FECDE6BFE4AF3247F551195C4E029 /* PoporImageBrower.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C46A1A1AD57FFB593B7DC819996CE466 /* PoporImageBrower.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -207,7 +207,6 @@
 		852BD9A110F6524022BB7DB4AC09FB3F /* SDWebImageCodersManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDWebImageCodersManager.m; path = SDWebImage/SDWebImageCodersManager.m; sourceTree = "<group>"; };
 		8610C0C4B8E3829D5FCD5976094BD56C /* Pods_PoporImageBrower_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_PoporImageBrower_Example.framework; path = "Pods-PoporImageBrower_Example.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		870B65C17D2D0131EBF1164A01554FF9 /* SDImageCache.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDImageCache.m; path = SDWebImage/SDImageCache.m; sourceTree = "<group>"; };
-		88784DD13D476A816DD41656BB02F47D /* icon.bundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.plug-in"; name = icon.bundle; path = PoporImageBrower/Classes/icon.bundle; sourceTree = "<group>"; };
 		8F0971E905E36D8FDB51D3E50A0208B6 /* SDWebImage-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SDWebImage-dummy.m"; sourceTree = "<group>"; };
 		8F26F5D84B503BC810F7E595660C4E84 /* SDWebImage.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = SDWebImage.modulemap; sourceTree = "<group>"; };
 		91271FDF9D299ABC5FD799D225BC0D6C /* PoporImageBrowerCell.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = PoporImageBrowerCell.h; path = PoporImageBrower/Classes/PoporImageBrowerCell.h; sourceTree = "<group>"; };
@@ -231,6 +230,7 @@
 		BD74F81803B34991519DAA8557BE3CBC /* PoporImageBrowerBundle.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = PoporImageBrowerBundle.h; path = PoporImageBrower/Classes/PoporImageBrowerBundle.h; sourceTree = "<group>"; };
 		C116976E37847D348E79D1E4678DC433 /* UIImage+GIF.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImage+GIF.h"; path = "SDWebImage/UIImage+GIF.h"; sourceTree = "<group>"; };
 		C435BA356BA5309BEBDE0A6DE194BC63 /* SDWebImageCompat.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDWebImageCompat.m; path = SDWebImage/SDWebImageCompat.m; sourceTree = "<group>"; };
+		C46A1A1AD57FFB593B7DC819996CE466 /* PoporImageBrower.bundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.plug-in"; name = PoporImageBrower.bundle; path = PoporImageBrower/Classes/PoporImageBrower.bundle; sourceTree = "<group>"; };
 		C57510D3EC008264D6F1B29F38BCD639 /* SDWebImageCodersManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDWebImageCodersManager.h; path = SDWebImage/SDWebImageCodersManager.h; sourceTree = "<group>"; };
 		CA12FAC7F018F234B0C12F5E38FABD42 /* Pods-PoporImageBrower_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-PoporImageBrower_Example.modulemap"; sourceTree = "<group>"; };
 		CB66E0E21FF71D7A2F336F154EBA9955 /* SDWebImage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = SDWebImage.framework; path = SDWebImage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -328,17 +328,17 @@
 				B5F9188F296002C09464849BCE7686B4 /* PoporShortTapGestureRecognizer.h */,
 				5783AE5C29296EFFF9D793BF6ECF51AD /* PoporShortTapGestureRecognizer.m */,
 				F3E5EBC8FBA4AFD0B4A983C57BB5FBFF /* Pod */,
-				22A146D5FFF57610DD49F2476CED04B6 /* Resources */,
+				143F511267F7BFB2D566D1B7CDBCAE94 /* Resources */,
 				AC4BC4ECE5621ECA6B1EC47873299C58 /* Support Files */,
 			);
 			name = PoporImageBrower;
 			path = ../..;
 			sourceTree = "<group>";
 		};
-		22A146D5FFF57610DD49F2476CED04B6 /* Resources */ = {
+		143F511267F7BFB2D566D1B7CDBCAE94 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				88784DD13D476A816DD41656BB02F47D /* icon.bundle */,
+				C46A1A1AD57FFB593B7DC819996CE466 /* PoporImageBrower.bundle */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -667,7 +667,7 @@
 				D5A27C8FB06DF9EBD73CD8C48836113A /* Headers */,
 				BE027CFC59CB03BE6B4433CD1AAE5869 /* Sources */,
 				68A715FFAACA8F5103C54C183F63E5F3 /* Frameworks */,
-				C058C571427E12D9FDC09674635518E4 /* Resources */,
+				A41B9581391F9AFEB94A37E8D8E0A3E6 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -801,11 +801,11 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C058C571427E12D9FDC09674635518E4 /* Resources */ = {
+		A41B9581391F9AFEB94A37E8D8E0A3E6 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				254F614DA072BE8678645DDF3BC3BF0E /* icon.bundle in Resources */,
+				FC6FECDE6BFE4AF3247F551195C4E029 /* PoporImageBrower.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
