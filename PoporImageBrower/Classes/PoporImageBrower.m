@@ -55,23 +55,48 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 @implementation PoporImageBrower
 
 - (instancetype)initWithIndex:(NSInteger)index
-               copyImageArray:(NSArray<PoporImageBrowerEntity *> *)myImageArray
+               copyImageArray:(NSArray<PoporImageBrowerEntity *> *)copyImageArray
                     presentVC:(UIViewController *)presentVC
              originImageBlock:(PoporImageBrowerIVBlock _Nonnull)originImageBlock
                disappearBlock:(PoporImageBrowerVoidBlock _Nullable)disappearBlock
         placeholderImageBlock:(PoporImageBrowerImageBlock _Nullable)placeholderImageBlock
 {
-    return [self initWithIndex:index copyImageArray:myImageArray weakImageArray:nil presentVC:presentVC originImageBlock:originImageBlock disappearBlock:disappearBlock placeholderImageBlock:placeholderImageBlock];
+    return [self initWithIndex:index
+                copyImageArray:copyImageArray
+                weakImageArray:nil
+                     presentVC:presentVC
+              originImageBlock:originImageBlock
+                disappearBlock:disappearBlock
+         placeholderImageBlock:placeholderImageBlock];
 }
 
 // weakImageArray, 用于第二次开发
 - (instancetype)initWithIndex:(NSInteger)index
-               copyImageArray:(NSArray<PoporImageBrowerEntity *> *)myImageArray
+               copyImageArray:(NSArray<PoporImageBrowerEntity *> *)copyImageArray
                weakImageArray:(NSArray<PoporImageBrowerEntity *> *)weakImageArray
                     presentVC:(UIViewController *)presentVC
              originImageBlock:(PoporImageBrowerIVBlock _Nonnull)originImageBlock
                disappearBlock:(PoporImageBrowerVoidBlock _Nullable)disappearBlock
-        placeholderImageBlock:(PoporImageBrowerImageBlock _Nullable)placeholderImageBlock
+        placeholderImageBlock:(PoporImageBrowerImageBlock _Nullable)placeholderImageBlock {
+    
+    return [self initWithIndex:index
+                copyImageArray:copyImageArray
+                weakImageArray:weakImageArray
+                     presentVC:presentVC
+              originImageBlock:originImageBlock
+            willDisappearBlock:nil
+                disappearBlock:disappearBlock
+         placeholderImageBlock:placeholderImageBlock];
+}
+
+- (instancetype)initWithIndex:(NSInteger)index
+               copyImageArray:(NSArray<PoporImageBrowerEntity *> *)copyImageArray
+               weakImageArray:(NSArray<PoporImageBrowerEntity *> *)weakImageArray
+                    presentVC:(UIViewController *)presentVC
+             originImageBlock:(PoporImageBrowerIVBlock _Nonnull)originImageBlock
+           willDisappearBlock:(PoporImageBrowerVoidBlock _Nullable)willDisappearBlock
+               disappearBlock:(PoporImageBrowerVoidBlock _Nullable)disappearBlock
+        placeholderImageBlock:(PoporImageBrowerImageBlock _Nullable)placeholderImageBlock;
 {
     
     if(self = [super initWithNibName:nil bundle:nil]) {
@@ -80,7 +105,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
         //保存原来的屏幕旋转状态
         self.originalOrientation = [[presentVC valueForKey:@"interfaceOrientation"] integerValue];
         _index                   = index;
-        _myImageArray            = myImageArray;
+        _myImageArray            = copyImageArray;
         if (weakImageArray) {
             _weakImageArray      = weakImageArray;
         }else{
@@ -88,6 +113,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
         }
         
         _originImageBlock        = originImageBlock;
+        _willDisappearBlock      = willDisappearBlock;
         _disappearBlock          = disappearBlock;
         _placeholderImageBlock   = placeholderImageBlock;
         
@@ -394,6 +420,9 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
         duration = 0;
     }
     [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+        if (self.willDisappearBlock) {
+            self.willDisappearBlock(self, self.index);
+        }
         if(duration != 0){
             self.tempImageView.frame = convertFrame;
         }

@@ -1,6 +1,6 @@
 PODS:
   - MBProgressHUD (1.1.0)
-  - PoporImageBrower (0.0.20):
+  - PoporImageBrower (0.0.21):
     - MBProgressHUD
     - SDWebImage
   - SDWebImage (4.4.2):
@@ -21,7 +21,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
-  PoporImageBrower: afdf63bd0625bc40d1d943fa5f761e7e47cc7f8d
+  PoporImageBrower: 2c350678f175c5fbcc96376191168152147437e8
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
 
 PODFILE CHECKSUM: ccf0a6041d98d3f8ad17dd0d71321367df313e3a

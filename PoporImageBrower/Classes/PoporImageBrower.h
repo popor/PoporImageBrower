@@ -32,6 +32,7 @@ typedef void         (^PoporImageBrowerVoidBlock)(PoporImageBrower *browerContro
 @property (nonatomic, copy  ) PoporImageBrowerIVBlock    originImageBlock;
 @property (nonatomic, copy  ) PoporImageBrowerImageBlock placeholderImageBlock;
 
+@property (nonatomic, copy  ) PoporImageBrowerVoidBlock  willDisappearBlock;
 @property (nonatomic, copy  ) PoporImageBrowerVoidBlock  disappearBlock;
 @property (nonatomic, copy  ) PoporImageBrowerVoidBlock  singleTapBlock;
 @property (nonatomic, copy  ) PoporImageBrowerVoidBlock  scrollBlock;
@@ -56,18 +57,27 @@ typedef void         (^PoporImageBrowerVoidBlock)(PoporImageBrower *browerContro
 @property (nonatomic, readonly) CGSize normalImageViewSize;
 
 - (instancetype)initWithIndex:(NSInteger)index
-               copyImageArray:(NSArray<PoporImageBrowerEntity *> *)myImageArray
+               copyImageArray:(NSArray<PoporImageBrowerEntity *> *)copyImageArray
                     presentVC:(UIViewController *)presentVC
              originImageBlock:(PoporImageBrowerIVBlock _Nonnull)originImageBlock
                disappearBlock:(PoporImageBrowerVoidBlock _Nullable)disappearBlock
         placeholderImageBlock:(PoporImageBrowerImageBlock _Nullable)placeholderImageBlock;
 
-// weakImageArray, 用于第二次开发
+// weakImageArray, 用于第二次开发,传递weakImageArray的时候,就不需要copyImageArray了
 - (instancetype)initWithIndex:(NSInteger)index
-               copyImageArray:(NSArray<PoporImageBrowerEntity *> *)myImageArray
+               copyImageArray:(NSArray<PoporImageBrowerEntity *> *)copyImageArray
                weakImageArray:(NSArray<PoporImageBrowerEntity *> *)weakImageArray
                     presentVC:(UIViewController *)presentVC
              originImageBlock:(PoporImageBrowerIVBlock _Nonnull)originImageBlock
+               disappearBlock:(PoporImageBrowerVoidBlock _Nullable)disappearBlock
+        placeholderImageBlock:(PoporImageBrowerImageBlock _Nullable)placeholderImageBlock;
+
+- (instancetype)initWithIndex:(NSInteger)index
+               copyImageArray:(NSArray<PoporImageBrowerEntity *> *)copyImageArray
+               weakImageArray:(NSArray<PoporImageBrowerEntity *> *)weakImageArray
+                    presentVC:(UIViewController *)presentVC
+             originImageBlock:(PoporImageBrowerIVBlock _Nonnull)originImageBlock
+           willDisappearBlock:(PoporImageBrowerVoidBlock _Nullable)willDisappearBlock
                disappearBlock:(PoporImageBrowerVoidBlock _Nullable)disappearBlock
         placeholderImageBlock:(PoporImageBrowerImageBlock _Nullable)placeholderImageBlock;
 
