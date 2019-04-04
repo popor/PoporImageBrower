@@ -11,6 +11,7 @@
 #import "PoporImageBrower.h"
 #import "PoporImageBrowerProgressView.h"
 #import <SDWebImage/SDWebImageManager.h>
+#import <SDWebImage/SDImageCache.h>
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "PoporShortTapGestureRecognizer.h"
 
