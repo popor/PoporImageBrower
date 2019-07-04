@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "PoporImageBrowerEntity.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class PoporImageBrower;
 
 @interface PoporImageBrowerCell : UICollectionViewCell<UIGestureRecognizerDelegate>
@@ -22,3 +24,7 @@
 - (void)adjustImageViewWithImage:(UIImage *)image;
 
 @end
+
+
+NS_ASSUME_NONNULL_END
+

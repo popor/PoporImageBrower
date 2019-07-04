@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface PoporImageBrowerProgressView : UIView
 
 @property (nonatomic) CGFloat progress;
@@ -15,3 +17,6 @@
 + (instancetype)progressView;
 
 @end
+
+NS_ASSUME_NONNULL_END
+

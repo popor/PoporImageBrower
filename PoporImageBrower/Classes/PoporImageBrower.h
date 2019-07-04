@@ -11,6 +11,8 @@
 #import "PoporImageBrowerEntity.h"
 #import "PoporImageBrowerBundle.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 typedef NS_ENUM(NSUInteger, PoporImageBrowerStatus) {
     PoporImageBrowerUnShow,//未显示
     PoporImageBrowerWillShow,//将要显示出来
@@ -102,3 +104,6 @@ typedef void         (^PoporImageBrowerVoidBlock)(PoporImageBrower *browerContro
 + (instancetype)new __unavailable;
 
 @end
+
+NS_ASSUME_NONNULL_END
+

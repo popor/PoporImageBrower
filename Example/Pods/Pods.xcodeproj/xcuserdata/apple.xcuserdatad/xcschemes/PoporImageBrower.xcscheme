@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0930"
+   LastUpgradeVersion = "1100"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9BBD5DC84191F8C29C46A564DBEB08AD"
+               BlueprintIdentifier = "EDADB94E77F4A2C2446E84D78D926B9A"
+               BuildableName = "PoporImageBrower.framework"
                BlueprintName = "PoporImageBrower"
-               ReferencedContainer = "container:Pods.xcodeproj"
-               BuildableName = "PoporImageBrower.framework">
+               ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
