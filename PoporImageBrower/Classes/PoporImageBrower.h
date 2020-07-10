@@ -58,6 +58,9 @@ typedef void         (^PoporImageBrowerVoidBlock)(PoporImageBrower *browerContro
  */
 @property (nonatomic, readonly) CGSize normalImageViewSize;
 
+/*
+ 注意: PoporImageBrower.modalPresentationStyle = UIModalPresentationCustom; 全局修改vc.modalPresentationStyle, 别忘了单独处理本接口.
+ */
 - (instancetype)initWithIndex:(NSInteger)index
                copyImageArray:(NSArray<PoporImageBrowerEntity *> *)copyImageArray
                     presentVC:(UIViewController *)presentVC
@@ -65,6 +68,9 @@ typedef void         (^PoporImageBrowerVoidBlock)(PoporImageBrower *browerContro
                disappearBlock:(PoporImageBrowerVoidBlock _Nullable)disappearBlock
         placeholderImageBlock:(PoporImageBrowerImageBlock _Nullable)placeholderImageBlock;
 
+/*
+ 注意: PoporImageBrower.modalPresentationStyle = UIModalPresentationCustom; 全局修改vc.modalPresentationStyle, 别忘了单独处理本接口.
+ */
 // weakImageArray, 用于第二次开发,传递weakImageArray的时候,就不需要copyImageArray了
 - (instancetype)initWithIndex:(NSInteger)index
                copyImageArray:(NSArray<PoporImageBrowerEntity *> *)copyImageArray
@@ -74,6 +80,9 @@ typedef void         (^PoporImageBrowerVoidBlock)(PoporImageBrower *browerContro
                disappearBlock:(PoporImageBrowerVoidBlock _Nullable)disappearBlock
         placeholderImageBlock:(PoporImageBrowerImageBlock _Nullable)placeholderImageBlock;
 
+/*
+ 注意: PoporImageBrower.modalPresentationStyle = UIModalPresentationCustom; 全局修改vc.modalPresentationStyle, 别忘了单独处理本接口.
+ */
 - (instancetype)initWithIndex:(NSInteger)index
                copyImageArray:(NSArray<PoporImageBrowerEntity *> *)copyImageArray
                weakImageArray:(NSArray<PoporImageBrowerEntity *> *)weakImageArray
@@ -89,6 +98,7 @@ typedef void         (^PoporImageBrowerVoidBlock)(PoporImageBrower *browerContro
 
 /**
  显示图片浏览器
+ 注意: PoporImageBrower.modalPresentationStyle = UIModalPresentationCustom; 全局修改vc.modalPresentationStyle, 别忘了单独处理本接口.
  */
 - (void)show;
 

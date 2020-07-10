@@ -14,7 +14,7 @@
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "PoporImageBrowerBundle.h"
 
-NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
+NSTimeInterval const SWPhotoBrowerAnimationDuration = 2.3f;
 
 @interface MyCollectionView : UICollectionView
 
@@ -54,6 +54,9 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 
 @implementation PoporImageBrower
 
+/*
+ 注意: PoporImageBrower.modalPresentationStyle = UIModalPresentationCustom; 全局修改vc.modalPresentationStyle, 别忘了单独处理本接口.
+ */
 - (instancetype)initWithIndex:(NSInteger)index
                copyImageArray:(NSArray<PoporImageBrowerEntity *> *)copyImageArray
                     presentVC:(UIViewController *)presentVC
@@ -70,6 +73,9 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
          placeholderImageBlock:placeholderImageBlock];
 }
 
+/*
+ 注意: PoporImageBrower.modalPresentationStyle = UIModalPresentationCustom; 全局修改vc.modalPresentationStyle, 别忘了单独处理本接口.
+ */
 // weakImageArray, 用于第二次开发
 - (instancetype)initWithIndex:(NSInteger)index
                copyImageArray:(NSArray<PoporImageBrowerEntity *> *)copyImageArray
@@ -89,6 +95,9 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
          placeholderImageBlock:placeholderImageBlock];
 }
 
+/*
+ 注意: PoporImageBrower.modalPresentationStyle = UIModalPresentationCustom; 全局修改vc.modalPresentationStyle, 别忘了单独处理本接口.
+ */
 - (instancetype)initWithIndex:(NSInteger)index
                copyImageArray:(NSArray<PoporImageBrowerEntity *> *)copyImageArray
                weakImageArray:(NSArray<PoporImageBrowerEntity *> *)weakImageArray
@@ -313,7 +322,10 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 - (void)doPresentAnimation:(id<UIViewControllerContextTransitioning>)transitionContext {
     self.photoBrowerControllerStatus = PoporImageBrowerWillShow;
     UIView *containerView = [transitionContext containerView];
-    containerView.backgroundColor = [UIColor blackColor];
+    
+    //containerView.backgroundColor = [UIColor blackColor];
+    containerView.backgroundColor = [UIColor clearColor];
+    
     self.containerView = containerView;
     UIView *toView = [transitionContext viewForKey:UITransitionContextToViewKey];
     toView.backgroundColor = [UIColor clearColor];
@@ -347,6 +359,8 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
     //计算临时图片放大之后的frame
     CGRect toFrame = [self getTempImageViewFrameWithImage:image];
     [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+        containerView.backgroundColor = [UIColor blackColor];
+        
         self.tempImageView.frame = toFrame;
         //更新状态栏,iphoneX不要隐藏状态栏
         if(![self isIPhoneXSeries]){
@@ -498,6 +512,10 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 }
 
 #pragma mark - 打开关闭
+/**
+ 显示图片浏览器
+ 注意: PoporImageBrower.modalPresentationStyle = UIModalPresentationCustom; 全局修改vc.modalPresentationStyle, 别忘了单独处理本接口.
+ */
 - (void)show {
     if(self.photoBrowerControllerStatus != PoporImageBrowerUnShow) {
         return;

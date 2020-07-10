@@ -30,7 +30,7 @@ static NSString *const Cell = @"cell";
     [super viewDidLoad];
     self.title = @"PoporImageBrower";
     
-    self.useImage = NO;
+    self.useImage = YES;
     
     NSArray * dataArray0 = @[
                        @"http://ww2.sinaimg.cn/thumbnail/9ecab84ejw1emgd5nd6eaj20c80c8q4a.jpg",
@@ -100,11 +100,13 @@ static NSString *const Cell = @"cell";
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     
+    //self.navigationController.navigationBar.translucent = YES;
+    
     NSMutableArray * imageArray = [NSMutableArray new];
     if (self.isUseImage) {
         for (int i = 0;i<self.smallImageArray.count; i++) {
             PoporImageBrowerEntity * entity = [PoporImageBrowerEntity new];
-            entity.smallImage = self.smallImageArray[i];
+            //entity.smallImage = self.smallImageArray[i];
             entity.bigImage    = self.bigImageArray[i];
             
             [imageArray addObject:entity];
