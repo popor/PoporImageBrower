@@ -524,7 +524,12 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 2.3f;
         {
             self.transitioningDelegate = self;
             self.modalPresentationStyle = UIModalPresentationCustom;
-            [self.presentVC presentViewController:self animated:YES completion:nil];
+            __weak typeof(self) weakSelf = self;
+            [self.presentVC presentViewController:self animated:YES completion:^{
+                if (weakSelf.modalPresentationStyle != UIModalPresentationCustom) {
+                    NSLog(@"❌❌❌ %s PoporImageBrower.modalPresentationStyle != UIModalPresentationCustom, 可能会发生显示异常. ❌❌❌", __func__);
+                }
+            }];
         }
     });
 }
