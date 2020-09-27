@@ -14,7 +14,7 @@
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "PoporImageBrowerBundle.h"
 
-NSTimeInterval const SWPhotoBrowerAnimationDuration = 2.3f;
+NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
 
 @interface MyCollectionView : UICollectionView
 
@@ -263,12 +263,17 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 2.3f;
         self.scrollBlock(self, self.index);
     }
     // MARK: 滑动,索取父视图图片
+    
+    // 要把之前的图片恢复过来
+    [self.originalImageViews enumerateKeysAndObjectsUsingBlock:^(NSString*  _Nonnull key, UIImageView*  _Nonnull imgV, BOOL * _Nonnull stop) {
+        if (imgV && !imgV.image) {
+            imgV.image = [self.originalImages objectForKey:key];
+        }
+    }];
+    
     // 有时候取值会失败,这里有一次挽留的机会.注意问题1的前提
     UIImageView *imageView = self.originImageBlock(self, index);
     if (imageView) {
-        [self.originalImageViews enumerateKeysAndObjectsUsingBlock:^(NSString*  _Nonnull key, UIImageView*  _Nonnull imgV, BOOL * _Nonnull stop) {
-            imgV.image = [self.originalImages objectForKey:key];
-        }];
         [self.originalImageViews removeAllObjects];
         [self.originalImages removeAllObjects];
         NSString *key = [NSString stringWithFormat:@"%ld",(long)index];
@@ -417,8 +422,9 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 2.3f;
         imageView = [self.originalImageViews objectForKey:key];
     }
     _normalImageViewSize = imageView.frame.size;
-    CGRect convertFrame  = [imageView.superview convertRect:imageView.frame toCoordinateSpace:[UIScreen mainScreen].coordinateSpace];
+    CGRect  convertFrame = [imageView.superview convertRect:imageView.frame toCoordinateSpace:[UIScreen mainScreen].coordinateSpace];
     CGFloat duration     = SWPhotoBrowerAnimationDuration;
+    BOOL    animation    = YES;
     
     PoporImageBrowerEntity * entity = self.weakImageArray[_index];
     if (entity.isUseImage) {
@@ -426,19 +432,21 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 2.3f;
     }else{
         if(![[SDImageCache sharedImageCache] imageFromCacheForKey:entity.bigImageUrl.absoluteString] &&
            ![[SDImageCache sharedImageCache] imageFromCacheForKey:entity.smallImageUrl.absoluteString]){
-            duration = 0;
+            animation = NO;
         }
     }
     
     if(CGRectEqualToRect(convertFrame, CGRectZero)){
-        duration = 0;
+        animation = NO;
     }
     [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
         if (self.willDisappearBlock) {
             self.willDisappearBlock(self, self.index);
         }
-        if(duration != 0){
+        if (animation) {
             self.tempImageView.frame = convertFrame;
+        } else {
+            self.tempImageView.alpha = 0;
         }
         containerView.backgroundColor = [UIColor clearColor];
         //旋转屏幕至原来的状态
