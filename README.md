@@ -28,6 +28,10 @@ it, simply add the following line to your Podfile:
 pod 'PoporImageBrower'
 ```
 
+1.01
+图片浏览, 屏幕旋转刷新当前CC显示UI;
+不再推荐自动恢复屏幕方向, 推荐使用APP自己的方向管理方案, 代码只负责刷新自己UI;
+
 ## Author
 
 popor, 908891024@qq.com
