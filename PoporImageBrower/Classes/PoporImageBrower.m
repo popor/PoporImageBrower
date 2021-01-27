@@ -145,22 +145,31 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
             entity.bigImageUrl   = entity.bigImageUrl?:entity.smallImageUrl;
         }
     }
-    //获取小图
+    // 获取小图
     self.originalImageView  = self.originImageBlock(self, self.index);
     _normalImageViewSize    = self.originalImageView.frame.size;
     self.currentOrientation = [UIDevice currentDevice].orientation;
+    
     __weak typeof(self) weakSelf = self;
     //warning:在下拉屏幕的时候也会触发UIDeviceOrientationDidChangeNotification,所以如果当前屏幕旋转状态没有改变就不用刷新UI
     self.observer = [[NSNotificationCenter defaultCenter] addObserverForName:UIDeviceOrientationDidChangeNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-        if(!weakSelf.isViewLoaded) {
+        if (!weakSelf.isViewLoaded) {
             return;
         }
-        if([UIDevice currentDevice].orientation == weakSelf.currentOrientation) {
+        if ([UIDevice currentDevice].orientation == weakSelf.currentOrientation) {
             return;
+        } else {
+            UICollectionView * cv = weakSelf.collectionView;
+            weakSelf.currentOrientation = [UIDevice currentDevice].orientation;
+            [cv reloadData];
+            
+            NSIndexPath * ip = [NSIndexPath indexPathForItem:weakSelf.index inSection:0];
+            [cv scrollToItemAtIndexPath:ip atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+            
+            // 刷新显示CC, 防止小图切大图时候紊乱.
+            PoporImageBrowerCell * cc = (PoporImageBrowerCell *)[cv cellForItemAtIndexPath:ip];
+            [weakSelf collectionView:cv didEndDisplayingCell:cc forItemAtIndexPath:ip];
         }
-        weakSelf.currentOrientation = [UIDevice currentDevice].orientation;
-        [weakSelf.collectionView reloadData];
-        [weakSelf.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:weakSelf.index inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
     }];
 }
 
@@ -449,8 +458,12 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
             self.tempImageView.alpha = 0;
         }
         containerView.backgroundColor = [UIColor clearColor];
+        
         //旋转屏幕至原来的状态
-        [[UIDevice currentDevice] setValue:@(self.originalOrientation) forKey:@"orientation"];
+        if (self.autoResumePresentedVcOrientation) {
+            [[UIDevice currentDevice] setValue:@(self.originalOrientation) forKey:@"orientation"];
+        }
+        
     } completion:^(BOOL finished) {
         // MARK: 销毁
         if (self.disappearBlock) {
@@ -525,6 +538,10 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
  注意: PoporImageBrower.modalPresentationStyle = UIModalPresentationCustom; 全局修改vc.modalPresentationStyle, 别忘了单独处理本接口.
  */
 - (void)show {
+    [self showFinish:nil];
+}
+
+- (void)showFinish:(void (^ _Nullable)(void))finish {
     if(self.photoBrowerControllerStatus != PoporImageBrowerUnShow) {
         return;
     }
@@ -536,6 +553,9 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
             [self.presentVC presentViewController:self animated:YES completion:^{
                 if (weakSelf.modalPresentationStyle != UIModalPresentationCustom) {
                     NSLog(@"❌❌❌ %s PoporImageBrower.modalPresentationStyle != UIModalPresentationCustom, 可能会发生显示异常. ❌❌❌", __func__);
+                }
+                if (finish) {
+                    finish();
                 }
             }];
         }

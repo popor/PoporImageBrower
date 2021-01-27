@@ -58,6 +58,9 @@ typedef void         (^PoporImageBrowerVoidBlock)(PoporImageBrower *browerContro
  */
 @property (nonatomic, readonly) CGSize normalImageViewSize;
 
+// 关闭的时候, 是否恢复之前的方向, 默认为NO; 推荐使用APP自己控制的方向.
+@property (nonatomic        ) BOOL autoResumePresentedVcOrientation;
+
 /*
  注意: PoporImageBrower.modalPresentationStyle = UIModalPresentationCustom; 全局修改vc.modalPresentationStyle, 别忘了单独处理本接口.
  */
@@ -101,6 +104,8 @@ typedef void         (^PoporImageBrowerVoidBlock)(PoporImageBrower *browerContro
  注意: PoporImageBrower.modalPresentationStyle = UIModalPresentationCustom; 全局修改vc.modalPresentationStyle, 别忘了单独处理本接口.
  */
 - (void)show;
+
+- (void)showFinish:(void (^ _Nullable)(void))finish;
 
 - (void)close;
 
