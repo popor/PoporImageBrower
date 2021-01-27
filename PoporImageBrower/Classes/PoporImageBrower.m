@@ -58,7 +58,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
  注意: PoporImageBrower.modalPresentationStyle = UIModalPresentationCustom; 全局修改vc.modalPresentationStyle, 别忘了单独处理本接口.
  */
 - (instancetype)initWithIndex:(NSInteger)index
-               copyImageArray:(NSArray<PoporImageBrowerEntity *> *)copyImageArray
+               copyImageArray:(NSMutableArray<PoporImageBrowerEntity *> * _Nullable)copyImageArray
                     presentVC:(UIViewController * _Nonnull)presentVC
              originImageBlock:(PoporImageBrowerIVBlock _Nonnull)originImageBlock
                disappearBlock:(PoporImageBrowerVoidBlock _Nullable)disappearBlock
@@ -78,8 +78,8 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
  */
 // weakImageArray, 用于第二次开发
 - (instancetype)initWithIndex:(NSInteger)index
-               copyImageArray:(NSArray<PoporImageBrowerEntity *> *)copyImageArray
-               weakImageArray:(NSArray<PoporImageBrowerEntity *> *)weakImageArray
+               copyImageArray:(NSMutableArray<PoporImageBrowerEntity *> * _Nullable)copyImageArray
+               weakImageArray:(NSMutableArray<PoporImageBrowerEntity *> * _Nullable)weakImageArray
                     presentVC:(UIViewController * _Nonnull)presentVC
              originImageBlock:(PoporImageBrowerIVBlock _Nonnull)originImageBlock
                disappearBlock:(PoporImageBrowerVoidBlock _Nullable)disappearBlock
@@ -99,8 +99,8 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
  注意: PoporImageBrower.modalPresentationStyle = UIModalPresentationCustom; 全局修改vc.modalPresentationStyle, 别忘了单独处理本接口.
  */
 - (instancetype)initWithIndex:(NSInteger)index
-               copyImageArray:(NSArray<PoporImageBrowerEntity *> *)copyImageArray
-               weakImageArray:(NSArray<PoporImageBrowerEntity *> *)weakImageArray
+               copyImageArray:(NSMutableArray<PoporImageBrowerEntity *> * _Nullable)copyImageArray
+               weakImageArray:(NSMutableArray<PoporImageBrowerEntity *> * _Nullable)weakImageArray
                     presentVC:(UIViewController * _Nonnull)presentVC
              originImageBlock:(PoporImageBrowerIVBlock _Nonnull)originImageBlock
            willDisappearBlock:(PoporImageBrowerVoidBlock _Nullable)willDisappearBlock
@@ -114,7 +114,7 @@ NSTimeInterval const SWPhotoBrowerAnimationDuration = 0.3f;
         //保存原来的屏幕旋转状态
         self.originalOrientation = [[presentVC valueForKey:@"interfaceOrientation"] integerValue];
         _index                   = index;
-        _myImageArray            = copyImageArray;
+        _myImageArray            = [copyImageArray mutableCopy];
         if (weakImageArray) {
             _weakImageArray      = weakImageArray;
         }else{
